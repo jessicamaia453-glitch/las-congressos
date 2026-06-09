@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LASFORLIFE — Central de Congressos</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f5f7;min-height:100vh;}
+.app{max-width:900px;margin:0 auto;background:#f4f5f7;min-height:100vh;}
+.topbar{background:#3a3d5c;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100;}
+.logo-wrap{display:flex;align-items:center;gap:10px;}
+.logo-svg{width:40px;height:40px;flex-shrink:0;}
+.logo-text-wrap{display:flex;flex-direction:column;}
+.logo-main{color:#fff;font-size:18px;font-weight:600;letter-spacing:1px;line-height:1.1;}
+.logo-main span{font-weight:300;opacity:0.8;}
+.logo-tagline{color:rgba(255,255,255,0.45);font-size:9px;letter-spacing:0.3px;margin-top:1px;}
+.event-badge{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);font-size:10px;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.tab-bar{background:#fff;border-bottom:1px solid #e5e7eb;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 12px;position:sticky;top:61px;z-index:99;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-btn{padding:10px 13px;font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:color .15s,border-color .15s;flex-shrink:0;}
+.tab-btn i{font-size:13px;}
+.tab-btn:hover{color:#111827;}
+.tab-btn.active{color:#3a3d5c;border-bottom-color:#3a3d5c;}
+.add-tab{padding:10px 10px;font-size:17px;color:#6b7280;border:none;background:none;cursor:pointer;margin-left:auto;flex-shrink:0;}
+.add-tab:hover{color:#4caf50;}
+.content{padding:16px;min-height:calc(100vh - 120px);}
+.section{display:none;}
+.section.active{display:block;}
+.sec-title{font-size:14px;font-weight:600;color:#111827;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.hero{border-radius:12px;background:#1e2a4a;padding:18px;margin-bottom:12px;}
+.hero-eyebrow{font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:5px;}
+.hero-title{font-size:16px;font-weight:600;color:#fff;line-height:1.35;margin-bottom:10px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.pill{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;display:flex;align-items:center;gap:4px;}
+.pill-green{background:rgba(76,175,80,0.22);color:#a5d6a7;}
+.pill-blue{background:rgba(33,150,243,0.2);color:#90caf9;}
+.pill-yellow{background:rgba(255,193,7,0.18);color:#ffe082;}
+.pill-red{background:rgba(239,83,80,0.2);color:#ef9a9a;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px;}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:11px 13px;}
+.card-label{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;}
+.card-value{font-size:16px;font-weight:600;color:#111827;}
+.card-sub{font-size:11px;color:#6b7280;margin-top:2px;}
+.prog-bar{height:5px;background:#e5e7eb;border-radius:3px;margin-top:7px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;background:#4caf50;}
+.iblock{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;margin-bottom:8px;}
+.iblock-head{font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.iblock-head i{font-size:13px;}
+.iblock-body{font-size:12px;color:#111827;line-height:1.7;}
+.ag-list{display:flex;flex-direction:column;gap:7px;}
+.ag-item{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;}
+.ag-day{background:#3a3d5c;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap;text-align:center;line-height:1.5;min-width:56px;}
+.ag-title{font-size:12px;font-weight:600;color:#111827;}
+.ag-loc{font-size:11px;color:#6b7280;margin-top:2px;}
+.badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:500;margin-left:5px;}
+.b-green{background:#dcfce7;color:#166534;}
+.b-blue{background:#dbeafe;color:#1e40af;}
+.b-yellow{background:#fef9c3;color:#713f12;}
+.b-purple{background:#ede9fe;color:#4c1d95;}
+.team-section{margin-bottom:10px;}
+.team-label{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;padding-left:2px;}
+.contacts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;}
+.contact-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:11px 12px;display:flex;gap:9px;align-items:flex-start;}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;flex-shrink:0;}
+.c-name{font-size:12px;font-weight:600;color:#111827;}
+.c-role{font-size:11px;color:#6b7280;margin-top:1px;}
+.islands-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:10px;}
+.island-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;}
+.island-header{padding:10px 13px 8px;}
+.island-strategy{font-size:9px;letter-spacing:0.8px;text-transform:uppercase;font-weight:600;margin-bottom:3px;}
+.island-name{font-size:13px;font-weight:600;color:#111827;}
+.island-products{padding:0 13px 10px;display:flex;flex-direction:column;gap:4px;}
+.product-tag{font-size:11px;color:#6b7280;display:flex;align-items:center;gap:5px;}
+.mat-section{margin-bottom:12px;}
+.mat-header{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;padding-left:2px;}
+.files-list{display:flex;flex-direction:column;gap:6px;}
+.file-row{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.ficon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ficon.pdf{background:#fee2e2;color:#b91c1c;}
+.ficon.ppt{background:#ffedd5;color:#c2410c;}
+.ficon.xls{background:#dcfce7;color:#15803d;}
+.ficon.zip{background:#ede9fe;color:#6d28d9;}
+.ficon.vid{background:#dbeafe;color:#1d4ed8;}
+.ficon.doc{background:#e0f2fe;color:#0369a1;}
+.file-name{font-size:12px;font-weight:600;color:#111827;}
+.file-meta{font-size:10px;color:#6b7280;margin-top:1px;}
+.btn-dl{background:none;border:1px solid #d1d5db;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;color:#374151;display:flex;align-items:center;gap:4px;white-space:nowrap;text-decoration:none;}
+.btn-dl:hover{background:#f9fafb;}
+.upload-area{border:1.5px dashed #d1d5db;border-radius:8px;padding:14px;text-align:center;cursor:pointer;margin-top:8px;}
+.upload-area:hover{background:#f9fafb;}
+.upload-text{font-size:12px;color:#6b7280;}
+.mkt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px;}
+.mkt-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 13px;}
+.mkt-label{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;}
+.mkt-val{font-size:20px;font-weight:700;color:#111827;}
+.mkt-sub{font-size:11px;color:#6b7280;margin-top:2px;}
+.lp-frame{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;}
+.lp-header{background:#3a3d5c;padding:16px 18px;}
+.lp-header h2{color:#fff;font-size:14px;font-weight:600;}
+.lp-header p{color:rgba(255,255,255,0.55);font-size:11px;margin-top:4px;}
+.lp-body{padding:16px;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:480px){.form-2col{grid-template-columns:1fr;}.islands-grid{grid-template-columns:1fr;}.contacts-grid{grid-template-columns:1fr 1fr;}.cards-grid{grid-template-columns:1fr 1fr;}.mkt-grid{grid-template-columns:1fr 1fr;}.logo-tagline{display:none;}}
+.form-field{margin-bottom:9px;}
+.form-field label{display:block;font-size:11px;color:#6b7280;margin-bottom:3px;}
+.form-field input,.form-field select,.form-field textarea{width:100%;font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;color:#111827;outline:none;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:#3a3d5c;background:#fff;}
+.form-field textarea{resize:vertical;min-height:60px;}
+.btn-submit{width:100%;background:#3a3d5c;color:#fff;border:none;padding:11px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-submit:hover{background:#2d3049;}
+.lp-disclaimer{font-size:10px;color:#9ca3af;text-align:center;margin-top:8px;}
+.speech-box{background:#f8f9ff;border-left:3px solid #3a3d5c;border-radius:0 8px 8px 0;padding:10px 13px;margin-bottom:12px;}
+.speech-title{font-size:11px;font-weight:600;color:#3a3d5c;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;}
+.speech-box p{font-size:12px;color:#111827;line-height:1.65;}
+.leads-counter{background:#f4f5f7;border-radius:8px;padding:10px 13px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.leads-count-num{font-size:20px;font-weight:700;color:#111827;}
+.leads-count-label{font-size:11px;color:#6b7280;}
+.leads-meta{font-size:11px;color:#6b7280;text-align:right;}
+.ntf{display:none;background:#fff;border:1px solid #d1d5db;border-radius:12px;padding:14px;margin-bottom:12px;}
+.ntf.open{display:block;}
+.ntf-title{font-size:13px;font-weight:600;color:#111827;margin-bottom:10px;}
+.ntf-row{display:flex;gap:7px;flex-wrap:wrap;}
+.ntf-row input{flex:1;min-width:130px;font-size:12px;padding:7px 10px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;color:#111827;}
+.btn-create{padding:7px 13px;border-radius:8px;border:none;background:#3a3d5c;color:#fff;font-size:12px;cursor:pointer;font-weight:600;}
+.btn-cancel-sm{background:none;border:1px solid #d1d5db;color:#6b7280;padding:7px 13px;border-radius:8px;font-size:12px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="topbar">
+  <div class="logo-wrap">
+    <svg class="logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="22" cy="11" rx="8" ry="11.5" fill="#4caf50" opacity="0.95" transform="rotate(-15 22 11)"/>
+      <ellipse cx="22" cy="11" rx="8" ry="11.5" fill="#66bb6a" opacity="0.55" transform="rotate(10 22 11)"/>
+      <ellipse cx="12" cy="28" rx="8" ry="11.5" fill="#2196f3" opacity="0.92" transform="rotate(105 12 28)"/>
+      <ellipse cx="32" cy="28" rx="8" ry="11.5" fill="#ffc107" opacity="0.92" transform="rotate(45 32 28)"/>
+      <ellipse cx="22" cy="22" rx="5.5" ry="5.5" fill="#26a69a" opacity="0.8"/>
+    </svg>
+    <div class="logo-text-wrap">
+      <div class="logo-main">LAS<span>FOR</span>LIFE</div>
+      <div class="logo-tagline">Transformando a Indústria da Doença em Indústria da Saúde</div>
+    </div>
+  </div>
+  <span class="event-badge">Feira Hospitalar 2025</span>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" onclick="go('overview',this)"><i class="ti ti-layout-dashboard"></i> Visão geral</button>
+  <button class="tab-btn" onclick="go('agenda',this)"><i class="ti ti-calendar"></i> Agenda</button>
+  <button class="tab-btn" onclick="go('equipe',this)"><i class="ti ti-users"></i> Equipe</button>
+  <button class="tab-btn" onclick="go('produtos',this)"><i class="ti ti-vaccine-bottle"></i> Produtos & Stand</button>
+  <button class="tab-btn" onclick="go('materiais',this)"><i class="ti ti-file-download"></i> Materiais</button>
+  <button class="tab-btn" onclick="go('mkt',this)"><i class="ti ti-speakerphone"></i> MKT & Ações</button>
+  <button class="tab-btn" onclick="go('leads',this)"><i class="ti ti-forms"></i> Leads</button>
+  <button class="add-tab" onclick="toggleNew()" title="Novo evento">+</button>
+</div>
+
+<div class="content">
+<div id="ntf" class="ntf">
+  <p class="ntf-title">+ Adicionar novo evento</p>
+  <div class="ntf-row">
+    <input id="ntf-name" type="text" placeholder="Nome do evento"/>
+    <input id="ntf-date" type="text" placeholder="Datas (ex: 19–22 mai 2025)"/>
+    <button class="btn-create" onclick="createTab()">Criar aba</button>
+    <button class="btn-cancel-sm" onclick="toggleNew()">Cancelar</button>
+  </div>
+</div>
+
+<!-- VISÃO GERAL -->
+<div id="section-overview" class="section active">
+  <div class="hero">
+    <div class="hero-eyebrow">evento ativo · 2025</div>
+    <div class="hero-title">Feira Hospitalar 2025 — Stand C-161</div>
+    <div class="hero-pills">
+      <span class="pill pill-green">📅 19–22 mai 2025</span>
+      <span class="pill pill-blue">📍 SP Expo — Rod. Imigrantes, KM 1,5</span>
+      <span class="pill pill-yellow">👥 12 fixos + time móvel</span>
+      <span class="pill pill-red">🎯 Meta: 300 leads</span>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="card"><div class="card-label">Visitantes esperados</div><div class="card-value">~85 mil</div><div class="card-sub">Profissionais de saúde</div></div>
+    <div class="card"><div class="card-label">Marcas expositoras</div><div class="card-value">1.270+</div><div class="card-sub">Maior feira da América Latina</div></div>
+    <div class="card"><div class="card-label">Negócios gerados</div><div class="card-value">~R$3 bi</div><div class="card-sub">Estimativa do evento</div></div>
+    <div class="card"><div class="card-label">Meta de leads</div><div class="card-value">300</div><div class="card-sub">75/dia × 4 dias</div><div class="prog-bar"><div class="prog-fill" id="meta-fill" style="width:0%"></div></div></div>
+  </div>
+  <div class="iblock"><div class="iblock-head"><i class="ti ti-info-circle"></i> Qualificação do visitante</div><div class="iblock-body">65% são líderes (C-level, diretores, gerentes). Principais segmentos: 26% hospitais · 24% distribuidores · 9% clínicas · 41% governo/operadoras/indústria. Motivações: 58% buscar inovação · 57% networking · 42% novos fornecedores.</div></div>
+  <div class="iblock"><div class="iblock-head"><i class="ti ti-alert-circle"></i> Orientações gerais</div><div class="iblock-body">Baixe todos os materiais antes do evento. Camisetas polo LAS entregues na segunda-feira (18/05). Credenciamento antecipado obrigatório. Stand C-161 — referência em todos os mapas.</div></div>
+</div>
+
+<!-- AGENDA -->
+<div id="section-agenda" class="section">
+  <p class="sec-title"><span class="dot" style="background:#2196f3"></span> Agenda — Feira Hospitalar 2025</p>
+  <div class="ag-list">
+    <div class="ag-item"><span class="ag-day">Ter<br/>19/05</span><div><div class="ag-title">Programação científica + abertura do stand</div><div class="ag-loc">11:00 – 20:00 · SP Expo <span class="badge b-green">Stand C-161</span></div></div></div>
+    <div class="ag-item"><span class="ag-day">Qua<br/>20/05</span><div><div class="ag-title">Programação científica + Cocktail de Abertura</div><div class="ag-loc">11:00 – 20:00 · SP Expo <span class="badge b-yellow">Cocktail</span></div></div></div>
+    <div class="ag-item"><span class="ag-day">Qui<br/>21/05</span><div><div class="ag-title">Programação científica + Ativação com Rodrigo Lobo</div><div class="ag-loc">11:00 – 20:00 · 16h: bate-papo no Stand LAS <span class="badge b-purple">Ativação</span></div></div></div>
+    <div class="ag-item"><span class="ag-day">Sex<br/>22/05</span><div><div class="ag-title">Programação científica + encerramento</div><div class="ag-loc">11:00 – 20:00 · SP Expo</div></div></div>
+    <div class="ag-item"><span class="ag-day">Sala<br/>Reunião</span><div><div class="ag-title">Sala Saúde Integral — agendamento de reuniões</div><div class="ag-loc">Capacidade: 6 pessoas <span class="badge b-blue">Agendar</span></div></div></div>
+  </div>
+  <div class="iblock" style="margin-top:10px"><div class="iblock-head"><i class="ti ti-map-pin"></i> Local</div><div class="iblock-body">São Paulo Expo · Rodovia dos Imigrantes, KM 1,5 – Vila Água Funda, São Paulo-SP · CEP 04329-900</div></div>
+</div>
+
+<!-- EQUIPE -->
+<div id="section-equipe" class="section">
+  <p class="sec-title"><span class="dot" style="background:#4caf50"></span> Equipe do evento</p>
+  <div class="team-section">
+    <div class="team-label">Time fixo — 12 pessoas</div>
+    <div class="contacts-grid">
+      <div class="contact-card"><div class="avatar" style="background:#3a3d5c">RA</div><div><div class="c-name">Rafael</div><div class="c-role">Diretoria</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#3a3d5c">JO</div><div><div class="c-name">João</div><div class="c-role">Diretoria</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#1565c0">FE</div><div><div class="c-name">Fernando</div><div class="c-role">Marketing</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#1565c0">AN</div><div><div class="c-name">Anderson</div><div class="c-role">Marketing</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#1565c0">JE</div><div><div class="c-name">Jéssica</div><div class="c-role">Marketing</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#1565c0">GA</div><div><div class="c-name">Gabrielly</div><div class="c-role">Marketing</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#1565c0">BA</div><div><div class="c-name">Barbara</div><div class="c-role">Marketing</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#2e7d32">LE</div><div><div class="c-name">Leo</div><div class="c-role">Vendas Indiretas</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#2e7d32">MI</div><div><div class="c-name">Michael</div><div class="c-role">Vendas Indiretas</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#2e7d32">JU</div><div><div class="c-name">Juan</div><div class="c-role">Vendas Indiretas</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#2e7d32">FR</div><div><div class="c-name">François</div><div class="c-role">Vendas Indiretas</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#2e7d32">GU</div><div><div class="c-name">Gustavo</div><div class="c-role">Vendas Indiretas</div></div></div>
+    </div>
+  </div>
+  <div class="team-section" style="margin-top:12px">
+    <div class="team-label">Time móvel — revezamento</div>
+    <div class="contacts-grid">
+      <div class="contact-card"><div class="avatar" style="background:#6a1aaa">GI</div><div><div class="c-name">Denis, Dai, Neto, Claudia</div><div class="c-role">Vendas Diretas Ginecologia (Storz)</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#7a5800">RE</div><div><div class="c-name">Vendas Diretas Regen</div><div class="c-role">3 pessoas · conforme gestor</div></div></div>
+      <div class="contact-card"><div class="avatar" style="background:#b71c1c">OP</div><div><div class="c-name">Operações de Vendas</div><div class="c-role">3 pessoas · conforme gestor</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUTOS -->
+<div id="section-produtos" class="section">
+  <p class="sec-title"><span class="dot" style="background:#26a69a"></span> Produtos — Stand C-161</p>
+  <div class="iblock" style="margin-bottom:10px"><div class="iblock-head"><i class="ti ti-layout-grid"></i> Estratégia</div><div class="iblock-body">5 ilhas temáticas · Equipamento atrai → Exclusividade diferencia → Giro monetiza. Mix: Equipamentos (atração) · Consumíveis (volume) · Exclusividades (conversão).</div></div>
+  <div class="islands-grid">
+    <div class="island-card"><div class="island-header" style="background:#f0fdf4"><div class="island-strategy" style="color:#15803d">Gerar Saúde</div><div class="island-name">Medicina Regenerativa</div></div><div class="island-products"><div class="product-tag"><i class="ti ti-circle-dot"></i> CellHarvest</div><div class="product-tag"><i class="ti ti-circle-dot"></i> SpineMed (sem mesa)</div><div class="product-tag"><i class="ti ti-circle-dot"></i> Durolane</div></div></div>
+    <div class="island-card"><div class="island-header" style="background:#fef2f2"><div class="island-strategy" style="color:#b91c1c">Tratar a Doença</div><div class="island-name">Ortopedia / Infecção</div></div><div class="island-products"><div class="product-tag"><i class="ti ti-circle-dot"></i> Cimentos BonOs</div><div class="product-tag"><i class="ti ti-circle-dot"></i> PerOssal 12,5 e 3cc</div><div class="product-tag"><i class="ti ti-circle-dot"></i> QuickDraw</div></div></div>
+    <div class="island-card"><div class="island-header" style="background:#eff6ff"><div class="island-strategy" style="color:#1d4ed8">Promover Educação</div><div class="island-name">Géis Antifibróticos + Neomedic</div></div><div class="island-products"><div class="product-tag"><i class="ti ti-circle-dot"></i> Géis antifibróticos</div><div class="product-tag"><i class="ti ti-circle-dot"></i> Linha Neomedic</div></div></div>
+    <div class="island-card"><div class="island-header" style="background:#f5f3ff"><div class="island-strategy" style="color:#6d28d9">Desenvolver Tecnologia</div><div class="island-name">CCP — Inovação</div></div><div class="island-products"><div class="product-tag"><i class="ti ti-circle-dot"></i> Agulhas de RFA</div><div class="product-tag"><i class="ti ti-circle-dot"></i> Gerador Curaway</div><div class="product-tag"><i class="ti ti-circle-dot"></i> Neurosign Compact</div><div class="product-tag"><i class="ti ti-circle-dot"></i> SmartOne KLS · Safesign</div></div></div>
+    <div class="island-card"><div class="island-header" style="background:#fffbeb"><div class="island-strategy" style="color:#92400e">Articular o Ecossistema</div><div class="island-name">Ilha do Giro</div></div><div class="island-products"><div class="product-tag"><i class="ti ti-circle-dot"></i> PulsaClean®</div><div class="product-tag"><i class="ti ti-circle-dot"></i> Motor ACF Sign</div><div class="product-tag"><i class="ti ti-circle-dot"></i> Lâminas de serra</div></div></div>
+  </div>
+</div>
+
+<!-- MATERIAIS -->
+<div id="section-materiais" class="section">
+  <p class="sec-title"><span class="dot" style="background:#4caf50"></span> Materiais de apoio</p>
+  <div class="mat-section">
+    <div class="mat-header">Institucionais & Vendas</div>
+    <div class="files-list">
+      <div class="file-row"><div class="ficon ppt"><i class="ti ti-presentation"></i></div><div style="flex:1"><div class="file-name">Apresentação pré-feira — Briefing equipe.pptx</div><div class="file-meta">Reunião Pré Hospitalar · 13/05/2025</div></div><a href="#" class="btn-dl"><i class="ti ti-download"></i> Baixar</a></div>
+      <div class="file-row"><div class="ficon pdf"><i class="ti ti-file-type-pdf"></i></div><div style="flex:1"><div class="file-name">Speech de vendas — roteiro completo.pdf</div><div class="file-meta">Dor → Produto → Próximo passo</div></div><a href="#" class="btn-dl"><i class="ti ti-download"></i> Baixar</a></div>
+      <div class="file-row"><div class="ficon pdf"><i class="ti ti-file-type-pdf"></i></div><div style="flex:1"><div class="file-name">Portfólio LAS — Feira Hospitalar 2025.pdf</div><div class="file-meta">Todos os produtos e ilhas</div></div><a href="#" class="btn-dl"><i class="ti ti-download"></i> Baixar</a></div>
+      <div class="file-row"><div class="ficon xls"><i class="ti ti-table"></i></div><div style="flex:1"><div class="file-name">Tabela de preços e condições promocionais.xlsx</div><div class="file-meta">Motor ACF · CellHarvest · SpineMED</div></div><a href="#" class="btn-dl"><i class="ti ti-download"></i> Baixar</a></div>
+    </div>
+  </div>
+  <div class="mat-section" style="margin-top:12px">
+    <div class="mat-header">Materiais científicos & folders</div>
+    <div class="files-list">
+      <div class="file-row"><div class="ficon pdf"><i class="ti ti-file-type-pdf"></i></div><div style="flex:1"><div class="file-name">Folder — Medicina Regenerativa (CellHarvest / Durolane).pdf</div><div class="file-meta">Para distribuição no stand</div></div><a href="#" class="btn-dl"><i class="ti ti-download"></i> Baixar</a></div>
+      <div class="file-row"><div class="ficon pdf"><i class="ti ti-file-type-pdf"></i></div><div style="flex:1"><div class="file-name">Estudo científico — PerOssal (infecção ortopédica).pdf</div><div class="file-meta">Evidências clínicas</div></div><a href="#" class="btn-dl"><i class="ti ti-download"></i> Baixar</a></div>
+      <div class="file-row"><div class="ficon doc"><i class="ti ti-file"></i></div><div style="flex:1"><div class="file-name">Como solicitar — guia de pedido e reembolso.pdf</div><div class="file-meta">Processo de compra e cobertura</div></div><a href="#" class="btn-dl"><i class="ti ti-download"></i> Baixar</a></div>
+    </div>
+  </div>
+  <div class="mat-section" style="margin-top:12px">
+    <div class="mat-header">Vídeos</div>
+    <div class="files-list">
+      <div class="file-row"><div class="ficon vid"><i class="ti ti-player-play"></i></div><div style="flex:1"><div class="file-name">Vídeo institucional LASFORLIFE 2025</div><div class="file-meta">2 min · Para tela do stand</div></div><a href="#" class="btn-dl"><i class="ti ti-external-link"></i> Abrir</a></div>
+      <div class="file-row"><div class="ficon vid"><i class="ti ti-player-play"></i></div><div style="flex:1"><div class="file-name">Demo PulsaClean® — vídeo técnico</div><div class="file-meta">3 min · Para demonstração no stand</div></div><a href="#" class="btn-dl"><i class="ti ti-external-link"></i> Abrir</a></div>
+    </div>
+  </div>
+  <div class="upload-area" onclick="alert('Para ativar uploads reais: conecte ao SharePoint (Fase 2 do roadmap).')">
+    <i class="ti ti-cloud-upload" style="font-size:20px;color:#9ca3af"></i>
+    <p class="upload-text" style="margin-top:4px">Clique para adicionar novo material</p>
+    <p class="upload-text" style="font-size:10px;margin-top:2px">Integração SharePoint disponível na Fase 2</p>
+  </div>
+</div>
+
+<!-- MKT -->
+<div id="section-mkt" class="section">
+  <p class="sec-title"><span class="dot" style="background:#ffc107"></span> MKT & Estratégia</p>
+  <div class="mkt-grid">
+    <div class="mkt-card"><div class="mkt-label">Meta total</div><div class="mkt-val">300</div><div class="mkt-sub">leads em 4 dias</div></div>
+    <div class="mkt-card"><div class="mkt-label">Meta por dia</div><div class="mkt-val">75</div><div class="mkt-sub">leads/dia · 12 pessoas</div></div>
+    <div class="mkt-card"><div class="mkt-label">Por pessoa/dia</div><div class="mkt-val">6–7</div><div class="mkt-sub">leads/pessoa</div></div>
+    <div class="mkt-card"><div class="mkt-label">Conversas/dia</div><div class="mkt-val">~10</div><div class="mkt-sub">por pessoa (benchmark)</div></div>
+  </div>
+  <div class="iblock"><div class="iblock-head"><i class="ti ti-shirt"></i> Dress code</div><div class="iblock-body">Dia 1 (19/05): Polo LAS preta · Dia 2 (20/05): Polo LAS branca · Dia 3 (21/05): Polo LAS azul · Dia 4 (22/05): Polo LAS preta. Qualquer dia: moletom LAS. Sempre: calça jeans ou preta · tênis confortável · crachá + cordinha LAS. Entrega: segunda-feira (18/05).</div></div>
+  <div class="iblock"><div class="iblock-head"><i class="ti ti-discount-2"></i> Campanhas promocionais</div><div class="iblock-body">Motor ACF: XX% off em qualquer compra · CellHarvest: XX% off acima de YY unidades · SpineMED: R$ XXXK em até YYx. Consulte tabela de preços na aba Materiais.</div></div>
+  <div class="iblock"><div class="iblock-head"><i class="ti ti-microphone"></i> Ativação — Rodrigo Lobo · 21/05 às 16h</div><div class="iblock-body">Bate-papo leve e dinâmico · Condução: Rafael &amp; João · ~40 min. Objetivo: conectar Saúde, Performance, Bem-estar e Cultura LAS. Cobertura em foto e vídeo para redes sociais. Pico de captação de leads antes/depois da ativação.</div></div>
+</div>
+
+<!-- LEADS -->
+<div id="section-leads" class="section">
+  <p class="sec-title"><span class="dot" style="background:#3a3d5c"></span> Cadastro de leads — Stand C-161</p>
+  <div class="leads-counter">
+    <div><div class="leads-count-label">Leads cadastrados</div><div class="leads-count-num" id="leads-num">0 / 300</div></div>
+    <div class="leads-meta">LP oficial:<br/><strong>lp.lasforlife.com.br/hospitalar-2026</strong></div>
+  </div>
+  <div class="speech-box">
+    <div class="speech-title">Speech no stand</div>
+    <p>1. Qual dor? — Identifique o problema do visitante<br/>2. Qual produto encaixa? — Conecte à ilha correta<br/>3. Qual o próximo passo? — Marque reunião, envie material, feche pedido</p>
+  </div>
+  <div class="lp-frame">
+    <div class="lp-header"><h2>Feira Hospitalar 2025 — Stand C-161</h2><p>Registre o lead imediatamente após a conversa no stand</p></div>
+    <div class="lp-body">
+      <div id="lead-form">
+        <div class="form-2col">
+          <div class="form-field"><label>Nome completo *</label><input type="text" id="l-nome" placeholder="Nome do contato"/></div>
+          <div class="form-field"><label>E-mail *</label><input type="email" id="l-email" placeholder="email@exemplo.com"/></div>
+        </div>
+        <div class="form-2col">
+          <div class="form-field"><label>WhatsApp *</label><input type="tel" id="l-tel" placeholder="(11) 99999-9999"/></div>
+          <div class="form-field"><label>UF de atuação</label>
+            <select id="l-uf"><option value="">Selecionar UF...</option><option>SP</option><option>RJ</option><option>MG</option><option>RS</option><option>PR</option><option>SC</option><option>BA</option><option>GO</option><option>DF</option><option>Outro</option></select>
+          </div>
+        </div>
+        <div class="form-2col">
+          <div class="form-field"><label>Especialidade *</label>
+            <select id="l-esp"><option value="">Selecionar...</option><option>Ortopedia</option><option>Infectologia</option><option>Ginecologia</option><option>Medicina Regenerativa</option><option>Anestesiologia</option><option>Neurologia</option><option>Compra / Distribuição</option><option>Gestão Hospitalar</option><option>Outro</option></select>
+          </div>
+          <div class="form-field"><label>Produto de interesse</label>
+            <select id="l-prod"><option value="">Selecionar...</option><option>CellHarvest</option><option>SpineMed</option><option>Durolane</option><option>Cimentos BonOs</option><option>PerOssal</option><option>QuickDraw</option><option>Géis Antifibróticos</option><option>CCP / Agulhas RFA</option><option>PulsaClean®</option><option>Motor ACF Sign</option></select>
+          </div>
+        </div>
+        <div class="form-field"><label>Observações / próximo passo</label><textarea id="l-obs" placeholder="Ex: Quer visita em junho, interesse em CellHarvest, aguarda proposta..."></textarea></div>
+        <button class="btn-submit" onclick="saveLead()"><i class="ti ti-check"></i> Salvar lead</button>
+        <p class="lp-disclaimer">Dados salvos localmente neste dispositivo durante o evento.</p>
+      </div>
+      <div id="lead-success" style="display:none;text-align:center;padding:18px 0">
+        <i class="ti ti-circle-check" style="font-size:34px;color:#4caf50"></i>
+        <p style="font-size:14px;font-weight:600;margin-top:7px;color:#111827">Lead salvo!</p>
+        <p style="font-size:11px;color:#6b7280;margin-top:3px" id="lead-msg"></p>
+        <button class="btn-submit" style="max-width:180px;margin:12px auto 0" onclick="newLead()">Cadastrar outro</button>
+      </div>
+      <div id="leads-list" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- .content -->
+</div><!-- .app -->
+
+<script>
+var leads=[];
+function go(n,b){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active');});document.getElementById('section-'+n).classList.add('active');b.classList.add('active');}
+function toggleNew(){document.getElementById('ntf').classList.toggle('open');}
+function createTab(){
+  var name=document.getElementById('ntf-name').value.trim();
+  var date=document.getElementById('ntf-date').value.trim();
+  if(!name)return;
+  var id='section-ct-'+Date.now();
+  var bar=document.getElementById('tabBar');
+  var add=bar.querySelector('.add-tab');
+  var btn=document.createElement('button');
+  btn.className='tab-btn';
+  btn.innerHTML='<i class="ti ti-calendar-event"></i> '+name;
+  btn.addEventListener('click',function(){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active');});document.getElementById(id).classList.add('active');btn.classList.add('active');});
+  bar.insertBefore(btn,add);
+  var sec=document.createElement('div');sec.id=id;sec.className='section';
+  sec.innerHTML='<div class="hero"><div class="hero-eyebrow">novo evento</div><div class="hero-title">'+name+'</div><div class="hero-pills"><span class="pill pill-green">'+(date||'Data a definir')+'</span></div></div><div class="iblock"><div class="iblock-head"><i class="ti ti-checks"></i> Aba criada com sucesso</div><div class="iblock-body">Adicione agenda, equipe, produtos e materiais para este evento.</div></div>';
+  document.querySelector('.content').appendChild(sec);
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active');});
+  sec.classList.add('active');btn.classList.add('active');
+  document.getElementById('ntf-name').value='';document.getElementById('ntf-date').value='';toggleNew();
+}
+function saveLead(){
+  var nome=document.getElementById('l-nome').value.trim();
+  var email=document.getElementById('l-email').value.trim();
+  var tel=document.getElementById('l-tel').value.trim();
+  var esp=document.getElementById('l-esp').value;
+  if(!nome||!tel||!esp){alert('Preencha nome, WhatsApp e especialidade.');return;}
+  leads.push({nome:nome,email:email,tel:tel,uf:document.getElementById('l-uf').value,esp:esp,prod:document.getElementById('l-prod').value,obs:document.getElementById('l-obs').value});
+  document.getElementById('leads-num').textContent=leads.length+' / 300';
+  document.getElementById('meta-fill').style.width=Math.min(Math.round(leads.length/300*100),100)+'%';
+  document.getElementById('lead-msg').textContent=leads.length+' lead(s) registrado(s) nesta sessão.';
+  document.getElementById('lead-form').style.display='none';
+  document.getElementById('lead-success').style.display='block';
+  renderLeads();
+}
+function newLead(){
+  ['l-nome','l-email','l-tel','l-obs'].forEach(function(id){document.getElementById(id).value='';});
+  ['l-uf','l-esp','l-prod'].forEach(function(id){document.getElementById(id).selectedIndex=0;});
+  document.getElementById('lead-form').style.display='block';document.getElementById('lead-success').style.display='none';
+}
+function renderLeads(){
+  if(!leads.length)return;
+  var el=document.getElementById('leads-list');
+  el.innerHTML='<p style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px;">Registrados nesta sessão ('+leads.length+')</p>'+
+    leads.map(function(l,i){return '<div class="file-row" style="margin-bottom:5px"><div class="ficon xls" style="font-size:11px;width:28px;height:28px;font-weight:700">'+(i+1)+'</div><div style="flex:1"><div class="file-name">'+l.nome+'</div><div class="file-meta">'+l.esp+(l.uf?' · '+l.uf:'')+' · '+l.tel+(l.prod?' · '+l.prod:'')+'</div></div></div>';}).join('');
+}
+</script>
+</body>
+</html>
