@@ -221,9 +221,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <script>
 // ─── CONFIG ─────────────────────────────────────────────
-var SHEET_ID = '15Z9uzskF0uT6s8_Iks_xOEdQqdD-qrK5jya0oZV76R4';
-var BASE_DIRECT = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=';
-  var BASE = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=');
+var PUB_ID = '2PACX-1vQXeBH9bK_kbWp0qvZibxYqSliCSfTx3RqSD0jmMjzcMW3Wr7aBwHY-PSOJVFM4ThTkgUwnXJ5mL5N0';
+var CSV_BASE = 'https://docs.google.com/spreadsheets/d/e/' + PUB_ID + '/pub?output=csv&sheet=';
 
 // ─── ESTADO ─────────────────────────────────────────────
 var DATA = { eventos:[], agenda:[], materiais:[], equipe:[], mkt:[], produtos:[] };
@@ -232,32 +231,46 @@ var currentEvent  = null;
 var currentTab    = 'visao';
 var leadsData     = {};
 
-// ─── PARSE SHEETS RESPONSE ──────────────────────────────
-function parseSheet(raw) {
-  var json = JSON.parse(raw.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, ''));
-  var cols = json.table.cols.map(function(c){ return c.label || ''; });
+// ─── PARSE CSV ───────────────────────────────────────────
+function parseCSV(text) {
+  var lines = text.split('\n').filter(function(l){ return l.trim(); });
+  if (lines.length < 2) return [];
+  
+  function splitCSVLine(line) {
+    var result = [], current = '', inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (ch === '"') { inQuotes = !inQuotes; }
+      else if (ch === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+      else { current += ch; }
+    }
+    result.push(current.trim());
+    return result;
+  }
+
+  var headers = splitCSVLine(lines[0]).map(function(h){ return h.replace(/^"|"$/g,'').trim(); });
   var rows = [];
-  (json.table.rows || []).forEach(function(r) {
-    var obj = {};
-    var hasData = false;
-    cols.forEach(function(col, i) {
-      var cell = r.c && r.c[i];
-      var val = cell ? (cell.v !== null && cell.v !== undefined ? String(cell.v) : '') : '';
-      // Limpa "Row X" gerado pelo Sheets para IDs numéricos
-      if (col && val) hasData = true;
-      obj[col] = val.trim();
+  for (var i = 1; i < lines.length; i++) {
+    var vals = splitCSVLine(lines[i]);
+    var obj = {}; var hasData = false;
+    headers.forEach(function(h, j) {
+      var v = (vals[j]||'').replace(/^"|"$/g,'').trim();
+      obj[h] = v;
+      if (h && v) hasData = true;
     });
     if (hasData) rows.push(obj);
-  });
+  }
   return rows;
 }
 
 function fetchSheet(name) {
-  var directUrl = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(name);
-  var proxyUrl  = 'https://api.allorigins.win/get?url=' + encodeURIComponent(directUrl);
-  return fetch(proxyUrl)
-    .then(function(r){ return r.json(); })
-    .then(function(j){ return parseSheet(j.contents); });
+  var url = CSV_BASE + encodeURIComponent(name);
+  return fetch(url)
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function(t) { return parseCSV(t); });
 }
 
 // ─── LOAD ALL ───────────────────────────────────────────
@@ -280,7 +293,7 @@ function reloadData() {
       }
     })
     .catch(function(err) {
-      console.error(err);
+      console.error('CSV error:', err);
       icon.classList.remove('spinning');
       document.getElementById('errorBanner').style.display = 'block';
       useDemoData();
