@@ -7,643 +7,195 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f5f7;min-height:100vh;}
-.app{max-width:900px;margin:0 auto;min-height:100vh;}
-.topbar{background:#3a3d5c;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100;}
-.logo-wrap{display:flex;align-items:center;gap:10px;}
-.logo-svg{width:38px;height:38px;flex-shrink:0;}
-.logo-main{color:#fff;font-size:17px;font-weight:600;letter-spacing:1px;line-height:1.1;}
-.logo-main span{font-weight:300;opacity:0.75;}
-.logo-tagline{color:rgba(255,255,255,0.4);font-size:9px;margin-top:1px;}
-.topbar-right{display:flex;align-items:center;gap:8px;}
-.sync-btn{background:rgba(255,255,255,0.12);border:none;color:rgba(255,255,255,0.8);font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:5px;}
-.sync-btn:hover{background:rgba(255,255,255,0.2);}
-.sync-btn i{font-size:13px;}
-.spinning{animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;gap:14px;}
-.spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#3a3d5c;border-radius:50%;animation:spin .8s linear infinite;}
-.loading-text{font-size:13px;color:#6b7280;}
-
-.error-banner{background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:13px 15px;margin:16px;font-size:12px;color:#991b1b;display:none;}
-.error-banner strong{display:block;margin-bottom:4px;font-size:13px;}
-
-.home{padding:16px;}
-.home-greeting{font-size:13px;color:#6b7280;margin-bottom:4px;}
-.home-title{font-size:17px;font-weight:500;color:#111827;margin-bottom:14px;}
-.filter-row{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f7;min-height:100vh;}
+.app{max-width:900px;margin:0 auto;}
+.topbar{background:#1e2235;padding:13px 20px;display:flex;align-items:center;}
+.brand-name{font-size:16px;font-weight:500;color:#fff;letter-spacing:2px;}
+.brand-name em{font-style:normal;font-weight:300;opacity:.65;}
+.brand-tag{font-size:9px;color:rgba(255,255,255,.38);letter-spacing:.3px;margin-top:2px;}
+.screen{display:none;}.screen.active{display:block;}
+.home-hero{background:#252b42;border-bottom:1px solid rgba(255,255,255,.06);padding:22px 20px 18px;}
+.home-eyebrow{font-size:10px;letter-spacing:2px;color:#4caf50;text-transform:uppercase;margin-bottom:7px;}
+.home-title{font-size:20px;font-weight:500;color:#f0f2f8;margin-bottom:3px;}
+.home-sub{font-size:12px;color:rgba(240,242,248,.6);}
+.filter-row{display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
 .filter-row::-webkit-scrollbar{display:none;}
-.filter-btn{font-size:11px;font-weight:500;padding:5px 12px;border-radius:20px;border:1px solid #d1d5db;background:#fff;color:#6b7280;cursor:pointer;white-space:nowrap;transition:all .12s;}
-.filter-btn.active{background:#3a3d5c;color:#fff;border-color:#3a3d5c;}
-.events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;}
-
-.event-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .15s,transform .1s;}
-.event-card:hover{border-color:#3a3d5c;transform:translateY(-1px);}
-.event-card-top{height:6px;}
-.event-card-body{padding:12px 14px;}
-.event-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:7px;}
-.s-ativo{background:#dcfce7;color:#166534;}
-.s-proximo{background:#dbeafe;color:#1e40af;}
-.s-encerrado{background:#f3f4f6;color:#6b7280;}
-.event-name{font-size:13px;font-weight:500;color:#111827;line-height:1.4;margin-bottom:8px;}
-.event-meta{display:flex;flex-direction:column;gap:3px;}
-.event-meta-row{font-size:11px;color:#6b7280;display:flex;align-items:center;gap:5px;}
-.event-meta-row i{font-size:12px;flex-shrink:0;}
-.event-footer{border-top:1px solid #f3f4f6;padding:7px 14px;display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
-.event-leads{font-size:10px;color:#6b7280;}
-.event-leads strong{color:#111827;}
-.prog-mini{height:4px;background:#e5e7eb;border-radius:2px;margin-top:3px;overflow:hidden;width:80px;}
-.prog-mini-fill{height:100%;border-radius:2px;background:#4caf50;}
-.event-arrow{font-size:11px;color:#3a3d5c;display:flex;align-items:center;gap:3px;font-weight:500;}
-
-.detail{display:none;}
-.detail-back{display:flex;align-items:center;gap:7px;padding:10px 18px;background:#fff;border-bottom:1px solid #e5e7eb;cursor:pointer;font-size:12px;color:#3a3d5c;font-weight:500;position:sticky;top:61px;z-index:98;}
-.detail-back:hover{background:#f9fafb;}
-.tab-bar{background:#fff;border-bottom:1px solid #e5e7eb;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 12px;position:sticky;top:101px;z-index:97;}
+.filter-pill{font-size:11px;font-weight:500;padding:5px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;white-space:nowrap;}
+.filter-pill.active{background:#4caf50;border-color:#4caf50;color:#fff;}
+.events-wrap{padding:16px 20px;display:flex;flex-direction:column;gap:10px;background:#f0f2f7;}
+.event-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;cursor:pointer;}
+.event-card:hover{border-color:#9ca3af;}
+.ec-inner{display:flex;}.ec-accent{width:4px;flex-shrink:0;}
+.ec-main{flex:1;padding:14px 16px;}
+.ec-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.ev-status{font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;}
+.s-ativo{background:#dcfce7;color:#166534;}.s-proximo{background:#dbeafe;color:#1e40af;}.s-enc{background:#f3f4f6;color:#6b7280;}
+.ec-arrow{color:#9ca3af;font-size:14px;}
+.ec-name{font-size:14px;font-weight:500;color:#111827;line-height:1.35;margin-bottom:10px;}
+.ec-meta{display:flex;flex-direction:column;gap:3px;}
+.ec-meta-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#6b7280;}
+.ec-meta-row i{font-size:12px;}
+.ec-footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid #f3f4f6;}
+.leads-lbl{font-size:10px;color:#9ca3af;}.leads-val{font-size:13px;font-weight:500;color:#111827;}
+.open-btn{font-size:11px;font-weight:500;color:#4caf50;display:flex;align-items:center;gap:4px;}
+.detail-topbar{background:#1e2235;padding:11px 20px;display:flex;align-items:center;gap:12px;}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:rgba(255,255,255,.65);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:6px 12px;border-radius:20px;cursor:pointer;}
+.detail-ev-name{font-size:13px;font-weight:500;color:rgba(255,255,255,.8);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tab-bar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 20px;display:flex;overflow-x:auto;scrollbar-width:none;gap:2px;}
 .tab-bar::-webkit-scrollbar{display:none;}
-.tab-btn{padding:10px 12px;font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;flex-shrink:0;transition:color .12s,border-color .12s;}
-.tab-btn i{font-size:13px;}
-.tab-btn.active{color:#3a3d5c;border-bottom-color:#3a3d5c;}
-.tab-btn:hover{color:#111827;}
-.tab-content{padding:16px 18px;}
-
-.hero{background:#1e2a4a;border-radius:10px;padding:16px;margin-bottom:12px;}
-.hero-eyebrow{font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:4px;}
-.hero-title{font-size:15px;font-weight:500;color:#fff;line-height:1.35;margin-bottom:8px;}
-.hero-pills{display:flex;flex-wrap:wrap;gap:5px;}
-.pill{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;}
-.pill-g{background:rgba(76,175,80,.22);color:#a5d6a7;}
-.pill-b{background:rgba(33,150,243,.2);color:#90caf9;}
-.pill-y{background:rgba(255,193,7,.18);color:#ffe082;}
-
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px;}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;}
-.card-label{font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
-.card-value{font-size:15px;font-weight:600;color:#111827;}
-.card-sub{font-size:10px;color:#6b7280;margin-top:1px;}
-
-.iblock{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:11px 13px;margin-bottom:8px;}
-.iblock-head{font-size:11px;font-weight:600;color:#6b7280;margin-bottom:5px;display:flex;align-items:center;gap:5px;}
-.iblock-head i{font-size:13px;}
-.iblock-body{font-size:12px;color:#111827;line-height:1.7;}
-
+.tab-btn{padding:11px 13px;font-size:11px;font-weight:500;color:#6b7280;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.tab-btn i{font-size:13px;}.tab-btn.active{color:#4caf50;border-bottom-color:#4caf50;}
+.tab-content{padding:18px 20px;display:none;background:#f0f2f7;}.tab-content.active{display:block;}
+.hero-block{background:#252b42;border-radius:14px;padding:18px;margin-bottom:14px;}
+.hero-eyebrow{font-size:9px;letter-spacing:2px;color:#4caf50;text-transform:uppercase;margin-bottom:5px;}
+.hero-name{font-size:17px;font-weight:500;color:#f0f2f8;line-height:1.3;margin-bottom:11px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.hpill{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500;border:1px solid;}
+.hp-g{background:rgba(76,175,80,.15);color:#6fcf75;border-color:rgba(76,175,80,.25);}
+.hp-b{background:rgba(56,139,255,.12);color:#7ab8ff;border-color:rgba(56,139,255,.22);}
+.hp-y{background:rgba(201,168,76,.12);color:#e8c86a;border-color:rgba(201,168,76,.22);}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:14px;}
+.stat{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 13px;}
+.stat-lbl{font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin-bottom:3px;}
+.stat-val{font-size:17px;font-weight:500;color:#111827;}.stat-sub{font-size:10px;color:#9ca3af;margin-top:1px;}
+.iblock{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:13px 15px;margin-bottom:8px;}
+.iblock-head{font-size:11px;font-weight:500;color:#9ca3af;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.iblock-head i{font-size:13px;color:#4caf50;}.iblock-body{font-size:12px;color:#111827;line-height:1.75;}
 .ag-list{display:flex;flex-direction:column;gap:7px;}
-.ag-item{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;}
-.ag-day{background:#3a3d5c;color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap;text-align:center;line-height:1.5;min-width:58px;}
-.ag-title{font-size:12px;font-weight:600;color:#111827;}
-.ag-loc{font-size:11px;color:#6b7280;margin-top:2px;display:flex;align-items:center;gap:4px;}
-.badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:600;margin-left:5px;}
-.b-g{background:#dcfce7;color:#166534;}
-.b-b{background:#dbeafe;color:#1e40af;}
-.b-y{background:#fef9c3;color:#713f12;}
-.b-p{background:#ede9fe;color:#4c1d95;}
-
-.mat-cat-title{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px 2px;}
-.files-list{display:flex;flex-direction:column;gap:6px;}
-.file-row{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:10px;}
+.ag-item{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 14px;display:flex;gap:12px;align-items:flex-start;}
+.ag-day{background:#1e2235;color:#fff;font-size:10px;font-weight:500;padding:4px 8px;border-radius:6px;white-space:nowrap;text-align:center;line-height:1.5;min-width:56px;flex-shrink:0;}
+.ag-title{font-size:12px;font-weight:500;color:#111827;margin-bottom:3px;}
+.ag-loc{font-size:11px;color:#6b7280;display:flex;align-items:center;gap:4px;}.ag-loc i{font-size:11px;}
+.mbadge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;margin-left:5px;font-weight:500;}
+.mb-g{background:#dcfce7;color:#166534;}.mb-b{background:#dbeafe;color:#1e40af;}
+.mb-y{background:#fef9c3;color:#854d0e;}.mb-p{background:#ede9fe;color:#5b21b6;}
+.mat-cat{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin:14px 0 7px 2px;}
+.file-list{display:flex;flex-direction:column;gap:6px;}
+.file-row{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:11px;}
 .ficon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.ficon.pdf{background:#fee2e2;color:#b91c1c;}
-.ficon.ppt{background:#ffedd5;color:#c2410c;}
-.ficon.xls{background:#dcfce7;color:#15803d;}
-.ficon.vid{background:#dbeafe;color:#1d4ed8;}
-.ficon.doc{background:#e0f2fe;color:#0369a1;}
-.ficon.zip{background:#ede9fe;color:#6d28d9;}
-.file-name{font-size:12px;font-weight:500;color:#111827;}
-.file-meta{font-size:10px;color:#6b7280;margin-top:1px;}
-.btn-dl{background:none;border:1px solid #d1d5db;border-radius:7px;padding:4px 10px;font-size:11px;cursor:pointer;color:#374151;display:flex;align-items:center;gap:4px;white-space:nowrap;text-decoration:none;}
-.btn-dl:hover{background:#f9fafb;}
-.btn-dl.disabled{opacity:.4;cursor:not-allowed;pointer-events:none;}
-
-.contacts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;}
-.contact-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;display:flex;gap:9px;align-items:flex-start;}
-.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;flex-shrink:0;}
-.c-name{font-size:12px;font-weight:600;color:#111827;}
-.c-role{font-size:11px;color:#6b7280;margin-top:1px;}
-
-.islands-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;}
-.island-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;}
-.island-header{padding:9px 12px 7px;}
-.island-strategy{font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:600;margin-bottom:2px;}
-.island-name{font-size:12px;font-weight:600;color:#111827;}
-.island-products{padding:0 12px 9px;display:flex;flex-direction:column;gap:3px;}
-.prod-tag{font-size:11px;color:#6b7280;display:flex;align-items:center;gap:5px;}
-
-.mkt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px;}
-.mkt-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 12px;}
-.mkt-label{font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
-.mkt-val{font-size:20px;font-weight:700;color:#111827;}
-.mkt-sub{font-size:10px;color:#6b7280;margin-top:1px;}
-
-.speech-box{background:#f8f9ff;border-left:3px solid #3a3d5c;border-radius:0 8px 8px 0;padding:10px 13px;margin-bottom:12px;}
-.speech-title{font-size:11px;font-weight:600;color:#3a3d5c;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
-.speech-box p{font-size:12px;color:#111827;line-height:1.65;}
-.lp-frame{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;}
-.lp-header-lead{background:#3a3d5c;padding:14px 16px;}
-.lp-header-lead h2{color:#fff;font-size:13px;font-weight:600;}
-.lp-header-lead p{color:rgba(255,255,255,.55);font-size:11px;margin-top:3px;}
-.lp-body{padding:14px;}
-.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-@media(max-width:500px){.form-2col{grid-template-columns:1fr;}}
-.form-field{margin-bottom:8px;}
-.form-field label{display:block;font-size:11px;color:#6b7280;margin-bottom:3px;}
-.form-field input,.form-field select,.form-field textarea{width:100%;font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;color:#111827;outline:none;}
-.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:#3a3d5c;background:#fff;}
-.form-field textarea{resize:vertical;min-height:55px;}
-.btn-submit{width:100%;background:#3a3d5c;color:#fff;border:none;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px;}
-.btn-submit:hover{background:#2d3049;}
-.leads-counter{background:#f4f5f7;border-radius:8px;padding:10px 13px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.leads-num{font-size:18px;font-weight:700;color:#111827;}
-.leads-label{font-size:11px;color:#6b7280;}
-.lead-list-item{background:#fff;border:1px solid #e5e7eb;border-radius:7px;padding:8px 11px;margin-bottom:5px;display:flex;gap:9px;align-items:center;}
-
-.empty{text-align:center;padding:28px 16px;color:#9ca3af;}
-.empty i{font-size:32px;display:block;margin-bottom:8px;}
-.empty p{font-size:12px;line-height:1.6;}
-
-@media(max-width:600px){
-  .events-grid{grid-template-columns:1fr;}
-  .cards-grid{grid-template-columns:1fr 1fr;}
-  .mkt-grid{grid-template-columns:1fr 1fr;}
-  .contacts-grid{grid-template-columns:1fr 1fr;}
-  .logo-tagline{display:none;}
-}
+.fi-pdf{background:#fee2e2;color:#b91c1c;}.fi-ppt{background:#ffedd5;color:#c2410c;}
+.fi-xls{background:#dcfce7;color:#15803d;}.fi-vid{background:#dbeafe;color:#1d4ed8;}
+.fi-doc{background:#e0f2fe;color:#0369a1;}.fi-zip{background:#ede9fe;color:#6d28d9;}
+.file-name{font-size:12px;font-weight:500;color:#111827;flex:1;}
+.file-meta{font-size:10px;color:#9ca3af;margin-top:1px;}
+.dl-btn{background:none;border:1px solid #d1d5db;border-radius:7px;padding:4px 10px;font-size:11px;cursor:pointer;color:#374151;display:flex;align-items:center;gap:4px;white-space:nowrap;text-decoration:none;}
+.dl-btn.dim{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.team-label{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin:12px 0 7px 2px;}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:7px;}
+.contact-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start;}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff;flex-shrink:0;}
+.c-name{font-size:12px;font-weight:500;color:#111827;}.c-role{font-size:10px;color:#9ca3af;margin-top:1px;}
+.island-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:8px;}
+.island{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;}
+.island-head{padding:10px 13px 8px;border-bottom:1px solid #f3f4f6;}
+.island-strat{font-size:9px;letter-spacing:.8px;text-transform:uppercase;font-weight:500;margin-bottom:3px;}
+.island-name{font-size:12px;font-weight:500;color:#111827;}
+.island-prods{padding:9px 13px;display:flex;flex-direction:column;gap:4px;}
+.prod-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#6b7280;}
+.prod-dot{width:5px;height:5px;border-radius:50%;background:#4caf50;flex-shrink:0;}
+.mkt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:14px;}
+.mkt-stat{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 13px;}
+.mkt-lbl{font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:#9ca3af;margin-bottom:3px;}
+.mkt-val{font-size:22px;font-weight:500;color:#111827;}.mkt-sub{font-size:10px;color:#9ca3af;margin-top:1px;}
+.speech{background:#f8f9ff;border-left:3px solid #1e2235;border-radius:0 8px 8px 0;padding:11px 14px;margin-bottom:12px;}
+.speech-title{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:#1e2235;margin-bottom:5px;font-weight:500;}
+.speech-body{font-size:12px;color:#111827;line-height:1.7;}
+.lp-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.lp-card-head{background:#252b42;padding:14px 16px;}
+.lp-card-title{font-size:13px;font-weight:500;color:#f0f2f8;margin-bottom:2px;}
+.lp-card-sub{font-size:11px;color:rgba(240,242,248,.5);}
+.lp-card-body{padding:16px;}
+.lp-link-section{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px;}
+.lp-link-label{font-size:11px;font-weight:500;color:#6b7280;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lp-link-label i{font-size:13px;color:#4caf50;}
+.lp-open-btn{background:#1e2235;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-top:10px;text-decoration:none;}
+.lp-no-link{font-size:12px;color:#9ca3af;text-align:center;padding:10px;}
+.empty-state{text-align:center;padding:28px;}
+.empty-state i{font-size:26px;color:#d1d5db;display:block;margin-bottom:7px;}
+.empty-state p{font-size:12px;color:#9ca3af;line-height:1.6;}
 </style>
 </head>
 <body>
 <div class="app">
-
-<div class="topbar">
-  <div class="logo-wrap">
-    <svg class="logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="22" cy="11" rx="8" ry="11.5" fill="#4caf50" opacity=".95" transform="rotate(-15 22 11)"/>
-      <ellipse cx="22" cy="11" rx="8" ry="11.5" fill="#66bb6a" opacity=".55" transform="rotate(10 22 11)"/>
-      <ellipse cx="12" cy="28" rx="8" ry="11.5" fill="#2196f3" opacity=".92" transform="rotate(105 12 28)"/>
-      <ellipse cx="32" cy="28" rx="8" ry="11.5" fill="#ffc107" opacity=".92" transform="rotate(45 32 28)"/>
-      <ellipse cx="22" cy="22" rx="5.5" ry="5.5" fill="#26a69a" opacity=".8"/>
-    </svg>
-    <div>
-      <div class="logo-main">LAS<span>FOR</span>LIFE</div>
-      <div class="logo-tagline">Transformando a Indústria da Doença em Indústria da Saúde</div>
+<div class="topbar"><div><div class="brand-name">LAS<em>FOR</em>LIFE</div><div class="brand-tag">Transformando a Indústria da Doença em Indústria da Saúde</div></div></div>
+<div class="screen active" id="homeScreen">
+  <div class="home-hero">
+    <div class="home-eyebrow">central de congressos</div>
+    <div class="home-title">Olá, equipe</div>
+    <div class="home-sub">Selecione o evento que deseja acessar</div>
+    <div class="filter-row">
+      <button class="filter-pill active" onclick="filterBy('todos',this)">Todos</button>
+      <button class="filter-pill" onclick="filterBy('ativo',this)">Em andamento</button>
+      <button class="filter-pill" onclick="filterBy('próximo',this)">Próximos</button>
+      <button class="filter-pill" onclick="filterBy('encerrado',this)">Encerrados</button>
     </div>
   </div>
-  <button class="sync-btn" onclick="reloadData()" id="syncBtn">
-    <i class="ti ti-refresh" id="syncIcon"></i> Atualizar
-  </button>
+  <div class="events-wrap" id="eventsGrid"></div>
 </div>
-
-<div id="errorBanner" class="error-banner">
-  <strong>Não foi possível carregar a planilha</strong>
-  Verifique se o Google Sheets está compartilhado como "Qualquer pessoa com o link". O app exibe dados de demonstração enquanto isso.
-</div>
-
-<div class="home" id="homeScreen">
-  <div class="home-greeting">Olá, equipe 👋</div>
-  <div class="home-title">Qual evento você quer acessar?</div>
-  <div class="filter-row">
-    <button class="filter-btn active" onclick="filterBy('todos',this)">Todos</button>
-    <button class="filter-btn" onclick="filterBy('ativo',this)">Em andamento</button>
-    <button class="filter-btn" onclick="filterBy('próximo',this)">Próximos</button>
-    <button class="filter-btn" onclick="filterBy('encerrado',this)">Encerrados</button>
+<div class="screen" id="detailScreen">
+  <div class="detail-topbar">
+    <button class="back-btn" onclick="goHome()"><i class="ti ti-arrow-left"></i> Eventos</button>
+    <div class="detail-ev-name" id="detailTitle"></div>
   </div>
-  <div class="events-grid" id="eventsGrid">
-    <div class="loading"><div class="spinner"></div><div class="loading-text">Carregando da planilha...</div></div>
-  </div>
+  <div class="tab-bar" id="tabBar"></div>
+  <div id="tabContent"></div>
 </div>
-
-<div class="detail" id="detailScreen">
-  <div class="detail-back" onclick="goHome()"><i class="ti ti-arrow-left"></i> Voltar aos eventos</div>
-  <div class="tab-bar" id="detailTabs"></div>
-  <div id="detailContent"></div>
 </div>
-
-</div>
-
 <script>
-// ─── CONFIG ─────────────────────────────────────────────
-var PUB_ID = '2PACX-1vQXeBH9bK_kbWp0qvZibxYqSliCSfTx3RqSD0jmMjzcMW3Wr7aBwHY-PSOJVFM4ThTkgUwnXJ5mL5N0';
-var CSV_BASE = 'https://docs.google.com/spreadsheets/d/e/' + PUB_ID + '/pub?output=csv&sheet=';
 
-// ─── ESTADO ─────────────────────────────────────────────
-var DATA = { eventos:[], agenda:[], materiais:[], equipe:[], mkt:[], produtos:[] };
-var currentFilter = 'todos';
-var currentEvent  = null;
-var currentTab    = 'visao';
-var leadsData     = {};
-
-// ─── PARSE CSV ───────────────────────────────────────────
-function parseCSV(text) {
-  var lines = text.split('\n').filter(function(l){ return l.trim(); });
-  if (lines.length < 2) return [];
-  
-  function splitCSVLine(line) {
-    var result = [], current = '', inQuotes = false;
-    for (var i = 0; i < line.length; i++) {
-      var ch = line[i];
-      if (ch === '"') { inQuotes = !inQuotes; }
-      else if (ch === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
-      else { current += ch; }
-    }
-    result.push(current.trim());
-    return result;
-  }
-
-  var headers = splitCSVLine(lines[0]).map(function(h){ return h.replace(/^"|"$/g,'').trim(); });
-  var rows = [];
-  for (var i = 1; i < lines.length; i++) {
-    var vals = splitCSVLine(lines[i]);
-    var obj = {}; var hasData = false;
-    headers.forEach(function(h, j) {
-      var v = (vals[j]||'').replace(/^"|"$/g,'').trim();
-      obj[h] = v;
-      if (h && v) hasData = true;
-    });
-    if (hasData) rows.push(obj);
-  }
-  return rows;
-}
-
-function fetchSheet(name) {
-  var url = CSV_BASE + encodeURIComponent(name);
-  return fetch(url)
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    })
-    .then(function(t) { return parseCSV(t); });
-}
-
-// ─── LOAD ALL ───────────────────────────────────────────
-function reloadData() {
-  var icon = document.getElementById('syncIcon');
-  icon.classList.add('spinning');
-
-  var sheets = ['Eventos','Agenda','Materiais','Equipe','MKT','Produtos'];
-  var keys   = ['eventos','agenda','materiais','equipe','mkt','produtos'];
-
-  Promise.all(sheets.map(function(s){ return fetchSheet(s); }))
-    .then(function(results) {
-      results.forEach(function(rows, i){ DATA[keys[i]] = rows; });
-      icon.classList.remove('spinning');
-      document.getElementById('errorBanner').style.display = 'none';
-      renderEvents(currentFilter);
-      if (currentEvent) {
-        currentEvent = DATA.eventos.find(function(e){ return e.ID === currentEvent.ID; }) || currentEvent;
-        renderTab(currentTab);
-      }
-    })
-    .catch(function(err) {
-      console.error('CSV error:', err);
-      icon.classList.remove('spinning');
-      document.getElementById('errorBanner').style.display = 'block';
-      useDemoData();
-    });
-}
-
-function useDemoData() {
-  DATA.eventos = [
-    {ID:'1',Nome:'Feira Hospitalar 2025',Status:'ativo',Data:'19–22 mai 2025',Local:'SP Expo, São Paulo – SP',Stand:'Stand C-161',Equipe:'12 fixos + time móvel',Meta:'300',Orientacoes:'Baixar todos os materiais antes do evento. Camisetas polo LAS entregues na segunda (18/05). Credenciamento antecipado obrigatório.'},
-    {ID:'2',Nome:'X Congresso de Infecções Osteoarticulares',Status:'próximo',Data:'27–29 ago 2025',Local:'São Paulo – SP',Stand:'Stand CEGOM',Equipe:'6 pessoas',Meta:'50',Orientacoes:'Evento científico — ortopedistas e infectologistas. Materiais disponíveis 7 dias antes.'}
-  ];
-  renderEvents(currentFilter);
-}
-
-// ─── HOME ────────────────────────────────────────────────
-var STATUS_COLOR = {ativo:'#4caf50','próximo':'#2196f3',encerrado:'#9ca3af'};
-
-function statusInfo(s) {
-  if (!s) return {cls:'s-encerrado', label:'Encerrado'};
-  var sl = s.toLowerCase().trim();
-  if (sl==='ativo')      return {cls:'s-ativo',   label:'Em andamento'};
-  if (sl==='próximo' || sl==='proximo') return {cls:'s-proximo', label:'Próximo'};
-  return {cls:'s-encerrado', label:'Encerrado'};
-}
-
-function renderEvents(filter) {
-  currentFilter = filter;
-  var grid = document.getElementById('eventsGrid');
-  var list = DATA.eventos.filter(function(e){
-    if (!e.Nome) return false;
-    if (filter==='todos') return true;
-    var sl = (e.Status||'').toLowerCase().trim();
-    if (filter==='ativo')    return sl==='ativo';
-    if (filter==='próximo')  return sl==='próximo'||sl==='proximo';
-    if (filter==='encerrado')return sl==='encerrado';
-    return true;
+var DB={"eventos":[{"id":"1","nome":"SBQ - ITAIPAVA RJ","status":"próximo","data":"26–27 Jun 2026","local":"SP Expo, São Paulo – SP","stand":"A definir","equipe":"Michael e Leo","meta":"","orientacoes":"Baixar todos os materiais antes do evento. "},{"id":"2","nome":"IOT X Congresso Infecção","status":"próximo","data":"16 - 17 Jul 2026","local":"São Paulo – SP","stand":"Stand ","equipe":"Time Indireta de Ortopedia, MKT, Time direta Opcional","meta":"","orientacoes":"Foco em PerOssal e BonOs"}],"agenda":[{"id":"a1","evento_id":"1","dia":"26/06","horario":"11:00–20:00","atividade":"Programação científica + abertura do stand","local":"Vila Itaipava, Itaipava/RJ","badge":"Stand LAS","destaque":"Sim"},{"id":"a4","evento_id":"2","dia":"16/07","horario":"09:00–18:00","atividade":"Stand LAS + demonstração de produtos","local":"Área de exposição","badge":"Stand LAS","destaque":"Sim"}],"materiais":[{"id":"m1","evento_id":"1","nome":"Apresentação pré-feira.pptx","tipo":"PPT","categoria":"Científico & Folder","link":"https://docs.google.com/presentation/d/14JFTA2VuOVpxjDVa7YP_P9K_3F55B8dW/edit?usp=sharing&ouid=114945377181792929526&rtpof=true&sd=true","data":"13/05/2025","ativo":"Sim"}],"equipe":[{"id":"e1","evento_id":"1","nome":"Rafael","cargo":"Diretoria","time":"Time Fixo","telefone":""},{"id":"e2","evento_id":"1","nome":"João","cargo":"Diretoria","time":"Time Fixo","telefone":""},{"id":"e3","evento_id":"1","nome":"Fernando","cargo":"Marketing","time":"Time Fixo","telefone":""},{"id":"e4","evento_id":"1","nome":"Leo","cargo":"Vendas Indiretas","time":"Time Fixo","telefone":""}],"produtos":[{"id":"p1","evento_id":"1","ilha":"Medicina Regenerativa","estrategia":"Gerar Saúde","produto":"CellHarvest","destaque":"Sim"},{"id":"p2","evento_id":"1","ilha":"Medicina Regenerativa","estrategia":"Gerar Saúde","produto":"SpineMed","destaque":""},{"id":"p3","evento_id":"1","ilha":"Ortopedia / Infecção","estrategia":"Tratar a Doença","produto":"Cimentos BonOs","destaque":"Sim"},{"id":"p4","evento_id":"2","ilha":"Ilha do Giro","estrategia":"Articular o Ecossistema","produto":"PulsaClean®","destaque":"Sim"}],"mkt":[{"id":"mk1","evento_id":"1","dress_code":"D1: Polo preta | D2: Polo branca | D3: Polo azul | D4: Polo preta. Calça jeans + tênis + crachá LAS. Entrega: 18/05.","meta":"300","campanhas":"Motor ACF: XX% off. CellHarvest: XX% off. SpineMED: R$XXXK.","acoes":"Ativação Rodrigo Lobo: 21/05 às 16h.","mensagens":"1. Qual dor? 2. Qual produto? 3. Próximo passo?"}],"leads_lp":[{"id":"lp1","evento_id":"1","link":"https://lp.lasforlife.com.br/thyroid-cancer-international-meeting-2026"},{"id":"lp2","evento_id":"2","link":""}]};
+var cf='todos',ce=null,ct='visao';
+var TC=['#1e2235','#15803d','#1d4ed8','#7c3aed','#b45309','#be185d'];
+var SA={'ativo':'#4caf50','próximo':'#3b82f6','encerrado':'#9ca3af'};
+var IC={'Medicina Regenerativa':{bg:'#f0fdf4',tc:'#15803d'},'Ortopedia / Infecção':{bg:'#fef2f2',tc:'#b91c1c'},'Ortopedia / Infecção Ortopédica':{bg:'#fef2f2',tc:'#b91c1c'},'Géis Antifibróticos + Neomedic':{bg:'#eff6ff',tc:'#1d4ed8'},'CCP — Inovação':{bg:'#f5f3ff',tc:'#6d28d9'},'Ilha do Giro':{bg:'#fffbeb',tc:'#92400e'}};
+function si(s){var l=(s||'').toLowerCase().trim();if(l==='ativo')return{c:'s-ativo',lb:'Em andamento'};if(l==='próximo'||l==='proximo')return{c:'s-proximo',lb:'Próximo'};return{c:'s-enc',lb:'Encerrado'};}
+function filterBy(f,btn){cf=f;document.querySelectorAll('.filter-pill').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderEv();}
+function renderEv(){
+  var list=DB.eventos.filter(function(e){
+    if(!e.nome)return false;
+    if(cf==='todos')return true;
+    var l=(e.status||'').toLowerCase().trim();
+    if(cf==='ativo')return l==='ativo';
+    if(cf==='próximo')return l==='próximo'||l==='proximo';
+    return l==='encerrado';
   });
-
-  if (!list.length) {
-    grid.innerHTML = '<div class="empty"><i class="ti ti-calendar-off"></i><p>Nenhum evento encontrado.</p></div>';
-    return;
-  }
-
-  grid.innerHTML = list.map(function(e) {
-    var si  = statusInfo(e.Status);
-    var col = STATUS_COLOR[(e.Status||'').toLowerCase().trim()] || '#9ca3af';
-    var leads = (leadsData[e.ID]||[]).length;
-    var meta  = parseInt(e.Meta)||0;
-    var pct   = meta>0 ? Math.min(Math.round(leads/meta*100),100) : 0;
-    return '<div class="event-card" onclick="openEvent(\''+e.ID+'\')">'+
-      '<div class="event-card-top" style="background:'+col+'"></div>'+
-      '<div class="event-card-body">'+
-        '<span class="event-status '+si.cls+'">'+si.label+'</span>'+
-        '<div class="event-name">'+e.Nome+'</div>'+
-        '<div class="event-meta">'+
-          '<div class="event-meta-row"><i class="ti ti-calendar"></i>'+(e.Data||'—')+'</div>'+
-          '<div class="event-meta-row"><i class="ti ti-map-pin"></i>'+(e.Local||'—')+'</div>'+
-          '<div class="event-meta-row"><i class="ti ti-users"></i>'+(e.Equipe||'—')+'</div>'+
+  var g=document.getElementById('eventsGrid');
+  if(!list.length){g.innerHTML='<div class="empty-state"><i class="ti ti-calendar-off"></i><p>Nenhum evento.</p></div>';return;}
+  g.innerHTML=list.map(function(e){
+    var s=si(e.status);
+    var ac=({'ativo':'#4caf50','próximo':'#3b82f6','encerrado':'#9ca3af'})[((e.status||'').toLowerCase().trim())]||'#9ca3af';
+    return '<div class="event-card" onclick="openEv(\''+e.id+'\')">'+
+      '<div class="ec-inner"><div class="ec-accent" style="background:'+ac+'"></div>'+
+      '<div class="ec-main">'+
+        '<div class="ec-top"><span class="ev-status '+s.c+'">'+s.lb+'</span><i class="ti ti-arrow-right ec-arrow"></i></div>'+
+        '<div class="ec-name">'+e.nome+'</div>'+
+        '<div class="ec-meta">'+
+          '<div class="ec-meta-row"><i class="ti ti-calendar"></i>'+(e.data||'—')+'</div>'+
+          '<div class="ec-meta-row"><i class="ti ti-map-pin"></i>'+(e.local||'—')+'</div>'+
+          '<div class="ec-meta-row"><i class="ti ti-users"></i>'+(e.equipe||'—')+'</div>'+
         '</div>'+
-        '<div class="event-footer">'+
-          '<div class="event-leads">Leads: <strong>'+leads+' / '+meta+'</strong><div class="prog-mini"><div class="prog-mini-fill" style="width:'+pct+'%"></div></div></div>'+
-          '<div class="event-arrow">Abrir <i class="ti ti-arrow-right"></i></div>'+
+        '<div class="ec-footer">'+
+          '<div><div class="leads-lbl">Meta</div><div class="leads-val">'+(e.meta||'0')+' leads</div></div>'+
+          '<div class="open-btn">Abrir <i class="ti ti-arrow-right"></i></div>'+
         '</div>'+
-      '</div></div>';
+      '</div></div></div>';
   }).join('');
 }
-
-function filterBy(f, btn) {
-  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  renderEvents(f);
-}
-
-// ─── DETAIL ──────────────────────────────────────────────
-function openEvent(id) {
-  currentEvent = DATA.eventos.find(function(e){ return e.ID===id; });
-  if (!currentEvent) return;
-  currentTab = 'visao';
-  document.getElementById('homeScreen').style.display='none';
-  document.getElementById('detailScreen').style.display='block';
-  buildTabs();
-  renderTab('visao');
-  window.scrollTo(0,0);
-}
-
-function goHome() {
-  document.getElementById('detailScreen').style.display='none';
-  document.getElementById('homeScreen').style.display='block';
-  window.scrollTo(0,0);
-}
-
-var TABS = [
-  {id:'visao',    icon:'ti-layout-dashboard', label:'Visão geral'},
-  {id:'agenda',   icon:'ti-calendar',         label:'Agenda'},
-  {id:'materiais',icon:'ti-file-download',    label:'Materiais'},
-  {id:'equipe',   icon:'ti-users',            label:'Equipe'},
-  {id:'produtos', icon:'ti-vaccine-bottle',   label:'Produtos'},
-  {id:'mkt',      icon:'ti-speakerphone',     label:'MKT'},
-  {id:'leads',    icon:'ti-forms',            label:'Leads'},
-];
-
-function buildTabs() {
-  document.getElementById('detailTabs').innerHTML = TABS.map(function(t){
-    return '<button class="tab-btn'+(t.id==='visao'?' active':'')+'" onclick="switchTab(\''+t.id+'\',this)"><i class="ti '+t.icon+'"></i>'+t.label+'</button>';
-  }).join('');
-}
-
-function switchTab(id, btn) {
-  currentTab = id;
-  document.querySelectorAll('#detailTabs .tab-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  renderTab(id);
-  window.scrollTo(0,60);
-}
-
-// ─── RENDER TAB ──────────────────────────────────────────
-function renderTab(id) {
-  var ev  = currentEvent;
-  var eid = ev.ID;
-  var html = '';
-
-  if (id==='visao') {
-    var si = statusInfo(ev.Status);
-    html =
-      '<div class="hero">'+
-        '<div class="hero-eyebrow">'+si.label.toLowerCase()+' · 2025</div>'+
-        '<div class="hero-title">'+ev.Nome+'</div>'+
-        '<div class="hero-pills">'+
-          '<span class="pill pill-g">'+(ev.Data||'')+'</span>'+
-          '<span class="pill pill-b">'+(ev.Local||'')+'</span>'+
-          (ev.Stand?'<span class="pill pill-y">'+ev.Stand+'</span>':'')+
-        '</div>'+
-      '</div>'+
-      '<div class="cards-grid">'+
-        '<div class="card"><div class="card-label">Data</div><div class="card-value" style="font-size:13px">'+(ev.Data||'—')+'</div></div>'+
-        '<div class="card"><div class="card-label">Local</div><div class="card-value" style="font-size:12px">'+(ev.Local||'—').split(',')[0]+'</div></div>'+
-        '<div class="card"><div class="card-label">Meta leads</div><div class="card-value">'+(ev.Meta||'—')+'</div></div>'+
-        '<div class="card"><div class="card-label">Equipe</div><div class="card-value" style="font-size:12px">'+(ev.Equipe||'—')+'</div></div>'+
-      '</div>'+
-      (ev.Orientacoes?'<div class="iblock"><div class="iblock-head"><i class="ti ti-alert-circle"></i> Orientações gerais</div><div class="iblock-body">'+ev.Orientacoes+'</div></div>':'');
-  }
-
-  else if (id==='agenda') {
-    var items = DATA.agenda.filter(function(a){ return String(a.ID_Evento)===String(eid); });
-    if (!items.length) {
-      html='<div class="empty"><i class="ti ti-calendar-off"></i><p>Nenhum item de agenda.<br/>Adicione na aba "Agenda" da planilha.</p></div>';
-    } else {
-      var badgeCls={Cocktail:'b-y','Ativação':'b-p','Stand LAS':'b-g',Convite:'b-b'};
-      html='<div class="ag-list">'+items.map(function(a){
-        var badge = a.Badge ? '<span class="badge '+(badgeCls[a.Badge]||'b-b')+'">'+a.Badge+'</span>' : '';
-        var las   = a.Destaque==='Sim' ? '<span class="badge b-g">LAS</span>' : '';
-        return '<div class="ag-item">'+
-          '<span class="ag-day">'+(a.Dia||'').replace(' ','<br/>')+'</span>'+
-          '<div>'+
-            '<div class="ag-title">'+(a.Atividade||'')+las+'</div>'+
-            '<div class="ag-loc"><i class="ti ti-map-pin" style="font-size:11px"></i>'+(a.Local_evento||'')+badge+'</div>'+
-            (a.Horario?'<div class="ag-loc"><i class="ti ti-clock" style="font-size:11px"></i>'+a.Horario+'</div>':'')+
-          '</div>'+
-        '</div>';
-      }).join('')+'</div>';
-    }
-  }
-
-  else if (id==='materiais') {
-    var mats = DATA.materiais.filter(function(m){ return String(m.ID_Evento)===String(eid) && m.Ativo!=='Não' && m.Nome; });
-    if (!mats.length) {
-      html='<div class="empty"><i class="ti ti-file-off"></i><p>Nenhum material ainda.<br/>Adicione na aba "Materiais" da planilha<br/>e cole o link do SharePoint.</p></div>';
-    } else {
-      var cats=[];
-      mats.forEach(function(m){ if(m.Categoria && cats.indexOf(m.Categoria)<0) cats.push(m.Categoria); });
-      if(!cats.length) cats=['Geral'];
-      var iconMap={PDF:'pdf',PPT:'ppt',XLS:'xls','Vídeo':'vid',Video:'vid',Doc:'doc',ZIP:'zip'};
-      html = cats.map(function(cat){
-        var catMats = cat==='Geral' ? mats : mats.filter(function(m){return m.Categoria===cat;});
-        if(!catMats.length) return '';
-        return '<div class="mat-cat-title">'+cat+'</div>'+
-          '<div class="files-list">'+catMats.map(function(m){
-            var ico = iconMap[m.Tipo] || 'doc';
-            var icoClass = {pdf:'file-type-pdf',ppt:'presentation',xls:'table',vid:'player-play',doc:'file',zip:'file-zip'}[ico]||'file';
-            var hasLink = m.Link && m.Link!=='COLE_O_LINK_AQUI' && m.Link!=='#' && m.Link!=='';
-            var btnLabel = m.Tipo==='Vídeo'||m.Tipo==='Video' ? '<i class="ti ti-external-link"></i> Abrir' : '<i class="ti ti-download"></i> Baixar';
-            return '<div class="file-row">'+
-              '<div class="ficon '+ico+'"><i class="ti ti-'+icoClass+'"></i></div>'+
-              '<div style="flex:1"><div class="file-name">'+m.Nome+'</div>'+
-              '<div class="file-meta">'+(m.Tipo||'')+(m.Data?' · '+m.Data:'')+'</div></div>'+
-              (hasLink
-                ? '<a href="'+m.Link+'" target="_blank" class="btn-dl">'+btnLabel+'</a>'
-                : '<span class="btn-dl disabled"><i class="ti ti-clock"></i> Em breve</span>')+
-            '</div>';
-          }).join('')+'</div>';
-      }).join('');
-    }
-  }
-
-  else if (id==='equipe') {
-    var membros = DATA.equipe.filter(function(p){ return String(p.ID_Evento)===String(eid) && p.Nome; });
-    if (!membros.length) {
-      html='<div class="empty"><i class="ti ti-users-off"></i><p>Nenhum membro cadastrado.<br/>Adicione na aba "Equipe" da planilha.</p></div>';
-    } else {
-      var times=[];
-      membros.forEach(function(p){ if(p.Time && times.indexOf(p.Time)<0) times.push(p.Time); });
-      if(!times.length) times=['Equipe'];
-      var tColors={'Time Fixo':'#3a3d5c','Time Móvel':'#7c3aed','Equipe':'#3a3d5c'};
-      html = times.map(function(t){
-        var grupo = t==='Equipe' ? membros : membros.filter(function(p){return p.Time===t;});
-        if(!grupo.length) return '';
-        var bg = tColors[t]||'#3a3d5c';
-        return '<div class="mat-cat-title">'+t+' ('+grupo.length+')</div>'+
-          '<div class="contacts-grid">'+grupo.map(function(p){
-            var ini = p.Nome.split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2);
-            return '<div class="contact-card">'+
-              '<div class="avatar" style="background:'+bg+'">'+ini+'</div>'+
-              '<div><div class="c-name">'+p.Nome+'</div>'+
-              '<div class="c-role">'+(p.Cargo||p['Cargo / Função']||'')+'</div>'+
-              (p.Telefone?'<div style="font-size:10px;color:#6b7280;margin-top:3px"><i class="ti ti-phone" style="font-size:11px"></i> '+p.Telefone+'</div>':'')+
-              '</div></div>';
-          }).join('')+'</div>';
-      }).join('');
-    }
-  }
-
-  else if (id==='produtos') {
-    var prods = DATA.produtos.filter(function(p){ return String(p.ID_Evento)===String(eid) && p.Produto; });
-    if (!prods.length) {
-      html='<div class="empty"><i class="ti ti-vaccine-bottle"></i><p>Nenhum produto cadastrado.<br/>Adicione na aba "Produtos" da planilha.</p></div>';
-    } else {
-      var ilhas=[];
-      prods.forEach(function(p){ if(p.Ilha && ilhas.indexOf(p.Ilha)<0) ilhas.push(p.Ilha); });
-      var iBg  ={'Medicina Regenerativa':'#f0fdf4','Ortopedia / Infecção':'#fef2f2','Ortopedia / Infecção Ortopédica':'#fef2f2','Géis Antifibróticos + Neomedic':'#eff6ff','CCP — Inovação':'#f5f3ff','Ilha do Giro':'#fffbeb'};
-      var iTxt ={'Medicina Regenerativa':'#15803d','Ortopedia / Infecção':'#b91c1c','Ortopedia / Infecção Ortopédica':'#b91c1c','Géis Antifibróticos + Neomedic':'#1d4ed8','CCP — Inovação':'#6d28d9','Ilha do Giro':'#92400e'};
-      html='<div class="islands-grid">'+ilhas.map(function(ilha){
-        var ip = prods.filter(function(p){return p.Ilha===ilha;});
-        var bg = iBg[ilha]||'#f9fafb';
-        var tc = iTxt[ilha]||'#374151';
-        var strat = ip[0].Estrategia||ip[0]['Estratégia da ilha']||'';
-        return '<div class="island-card">'+
-          '<div class="island-header" style="background:'+bg+'">'+
-            '<div class="island-strategy" style="color:'+tc+'">'+strat+'</div>'+
-            '<div class="island-name">'+ilha+'</div>'+
-          '</div>'+
-          '<div class="island-products">'+ip.map(function(p){
-            return '<div class="prod-tag"><i class="ti ti-circle-dot"></i>'+p.Produto+(p.Destaque==='Sim'?' ⭐':'')+'</div>';
-          }).join('')+'</div>'+
-        '</div>';
-      }).join('')+'</div>';
-    }
-  }
-
-  else if (id==='mkt') {
-    var mktRow = DATA.mkt.find(function(m){ return String(m.ID_Evento)===String(eid); });
-    if (!mktRow) {
-      html='<div class="empty"><i class="ti ti-speakerphone"></i><p>Nenhuma info de MKT.<br/>Adicione na aba "MKT" da planilha.</p></div>';
-    } else {
-      var meta2 = parseInt(mktRow.Meta)||0;
-      html=
-        '<div class="mkt-grid">'+
-          '<div class="mkt-card"><div class="mkt-label">Meta total</div><div class="mkt-val">'+meta2+'</div><div class="mkt-sub">leads no evento</div></div>'+
-          '<div class="mkt-card"><div class="mkt-label">Por pessoa/dia</div><div class="mkt-val">6–7</div><div class="mkt-sub">benchmark</div></div>'+
-        '</div>'+
-        (mktRow.Dress_code?'<div class="iblock"><div class="iblock-head"><i class="ti ti-shirt"></i> Dress code</div><div class="iblock-body">'+mktRow.Dress_code+'</div></div>':'')+
-        (mktRow.Campanhas?'<div class="iblock"><div class="iblock-head"><i class="ti ti-discount-2"></i> Campanhas</div><div class="iblock-body">'+mktRow.Campanhas+'</div></div>':'')+
-        (mktRow.Acoes?'<div class="iblock"><div class="iblock-head"><i class="ti ti-star"></i> Ações especiais</div><div class="iblock-body">'+mktRow.Acoes+'</div></div>':'')+
-        (mktRow.Mensagens?'<div class="iblock"><div class="iblock-head"><i class="ti ti-message-circle"></i> Mensagens-chave</div><div class="iblock-body">'+mktRow.Mensagens+'</div></div>':'');
-    }
-  }
-
-  else if (id==='leads') {
-    if (!leadsData[eid]) leadsData[eid]=[];
-    var evLeads = leadsData[eid];
-    var meta3   = parseInt(ev.Meta)||0;
-    var pct3    = meta3>0 ? Math.min(Math.round(evLeads.length/meta3*100),100) : 0;
-    html=
-      '<div class="leads-counter">'+
-        '<div><div class="leads-label">Leads cadastrados</div><div class="leads-num">'+evLeads.length+' / '+meta3+'</div></div>'+
-        '<div style="font-size:11px;color:#6b7280;text-align:right">'+pct3+'% da meta</div>'+
-      '</div>'+
-      '<div class="speech-box"><div class="speech-title">Speech no stand</div>'+
-      '<p>1. Qual dor? — Identifique o problema<br/>2. Qual produto encaixa? — Conecte à ilha<br/>3. Qual o próximo passo? — Marque reunião ou feche pedido</p></div>'+
-      '<div class="lp-frame">'+
-        '<div class="lp-header-lead"><h2>'+ev.Nome+'</h2><p>Registre o lead após a conversa no stand</p></div>'+
-        '<div class="lp-body">'+
-          '<div id="lf-'+eid+'">'+
-            '<div class="form-2col">'+
-              '<div class="form-field"><label>Nome completo *</label><input type="text" id="l-nome-'+eid+'" placeholder="Nome do contato"/></div>'+
-              '<div class="form-field"><label>E-mail</label><input type="email" id="l-email-'+eid+'" placeholder="email@exemplo.com"/></div>'+
-            '</div>'+
-            '<div class="form-2col">'+
-              '<div class="form-field"><label>WhatsApp *</label><input type="tel" id="l-tel-'+eid+'" placeholder="(11) 99999-9999"/></div>'+
-              '<div class="form-field"><label>UF</label><select id="l-uf-'+eid+'"><option value="">UF...</option><option>SP</option><option>RJ</option><option>MG</option><option>RS</option><option>PR</option><option>SC</option><option>BA</option><option>GO</option><option>DF</option><option>Outro</option></select></div>'+
-            '</div>'+
-            '<div class="form-2col">'+
-              '<div class="form-field"><label>Especialidade *</label><select id="l-esp-'+eid+'"><option value="">Selecionar...</option><option>Ortopedia</option><option>Infectologia</option><option>Ginecologia</option><option>Medicina Regenerativa</option><option>Anestesiologia</option><option>Neurologia</option><option>Compra/Distribuição</option><option>Gestão Hospitalar</option><option>Outro</option></select></div>'+
-              '<div class="form-field"><label>Produto de interesse</label><select id="l-prod-'+eid+'"><option value="">Selecionar...</option><option>CellHarvest</option><option>SpineMed</option><option>Durolane</option><option>Cimentos BonOs</option><option>PerOssal</option><option>QuickDraw</option><option>Géis Antifibróticos</option><option>Agulhas RFA</option><option>PulsaClean®</option><option>Motor ACF Sign</option></select></div>'+
-            '</div>'+
-            '<div class="form-field"><label>Observações / próximo passo</label><textarea id="l-obs-'+eid+'" placeholder="Ex: Quer visita em junho, interesse em CellHarvest..."></textarea></div>'+
-            '<button class="btn-submit" onclick="saveLead(\''+eid+'\')"><i class="ti ti-check"></i> Salvar lead</button>'+
-            '<p style="font-size:10px;color:#9ca3af;text-align:center;margin-top:7px">Dados salvos neste dispositivo.</p>'+
-          '</div>'+
-          '<div id="lok-'+eid+'" style="display:none;text-align:center;padding:18px 0">'+
-            '<i class="ti ti-circle-check" style="font-size:34px;color:#4caf50"></i>'+
-            '<p style="font-size:14px;font-weight:600;margin-top:7px;color:#111827">Lead salvo!</p>'+
-            '<p style="font-size:11px;color:#6b7280;margin-top:3px" id="lok-msg-'+eid+'"></p>'+
-            '<button class="btn-submit" style="max-width:170px;margin:12px auto 0" onclick="newLead(\''+eid+'\')">Cadastrar outro</button>'+
-          '</div>'+
-        '</div>'+
-      '</div>'+
-      (evLeads.length ?
-        '<div class="mat-cat-title" style="margin-top:14px">Registrados nesta sessão ('+evLeads.length+')</div>'+
-        evLeads.map(function(l,i){
-          return '<div class="lead-list-item">'+
-            '<div style="width:24px;height:24px;border-radius:50%;background:#3a3d5c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0">'+(i+1)+'</div>'+
-            '<div style="flex:1"><div style="font-size:12px;font-weight:500;color:#111827">'+l.nome+'</div>'+
-            '<div style="font-size:10px;color:#6b7280">'+l.esp+(l.uf?' · '+l.uf:'')+' · '+l.tel+(l.prod?' · '+l.prod:'')+'</div></div>'+
-            '</div>';
-        }).join('') : '');
-  }
-
-  document.getElementById('detailContent').innerHTML = '<div class="tab-content">'+html+'</div>';
-}
-
-// ─── LEADS ───────────────────────────────────────────────
-function saveLead(eid) {
-  var nome  = document.getElementById('l-nome-'+eid).value.trim();
-  var tel   = document.getElementById('l-tel-'+eid).value.trim();
-  var esp   = document.getElementById('l-esp-'+eid).value;
-  if (!nome||!tel||!esp){alert('Preencha nome, WhatsApp e especialidade.');return;}
-  if (!leadsData[eid]) leadsData[eid]=[];
-  leadsData[eid].push({
-    nome:nome,
-    email:document.getElementById('l-email-'+eid).value,
-    tel:tel,
-    uf:document.getElementById('l-uf-'+eid).value,
-    esp:esp,
-    prod:document.getElementById('l-prod-'+eid).value,
-    obs:document.getElementById('l-obs-'+eid).value
-  });
-  document.getElementById('lf-'+eid).style.display='none';
-  document.getElementById('lok-'+eid).style.display='block';
-  document.getElementById('lok-msg-'+eid).textContent=leadsData[eid].length+' lead(s) nesta sessão.';
-}
-
-function newLead(eid) {
-  ['l-nome-','l-email-','l-tel-','l-obs-'].forEach(function(p){document.getElementById(p+eid).value='';});
-  ['l-uf-','l-esp-','l-prod-'].forEach(function(p){document.getElementById(p+eid).selectedIndex=0;});
-  document.getElementById('lf-'+eid).style.display='block';
-  document.getElementById('lok-'+eid).style.display='none';
-}
-
-// ─── INIT ────────────────────────────────────────────────
-reloadData();
+var TABS=[{id:'visao',icon:'ti-layout-dashboard',label:'Visão geral'},{id:'agenda',icon:'ti-calendar',label:'Agenda'},{id:'materiais',icon:'ti-file-download',label:'Materiais'},{id:'equipe',icon:'ti-users',label:'Equipe'},{id:'produtos',icon:'ti-vaccine-bottle',label:'Produtos'},{id:'mkt',icon:'ti-speakerphone',label:'MKT'},{id:'leads',icon:'ti-forms',label:'Leads'}];
+function openEv(id){ce=DB.eventos.find(function(e){return e.id===id;});if(!ce)return;ct='visao';document.getElementById('homeScreen').classList.remove('active');document.getElementById('detailScreen').classList.add('active');document.getElementById('detailTitle').textContent=ce.nome;document.getElementById('tabBar').innerHTML=TABS.map(function(t){return'<button class="tab-btn'+(t.id==='visao'?' active':'')+'" onclick="swTab(\''+t.id+'\',this)"><i class="ti '+t.icon+'"></i>'+t.label+'</button>';}).join('');rdTab('visao');}
+function goHome(){document.getElementById('detailScreen').classList.remove('active');document.getElementById('homeScreen').classList.add('active');}
+function swTab(id,btn){ct=id;document.querySelectorAll('#tabBar .tab-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');rdTab(id);}
+function rdTab(id){var ev=ce,eid=ev.id,html='';
+if(id==='visao'){var s=si(ev.status);html='<div class="hero-block"><div class="hero-eyebrow">'+s.lb.toLowerCase()+'</div><div class="hero-name">'+ev.nome+'</div><div class="hero-pills"><span class="hpill hp-g"><i class="ti ti-calendar" style="font-size:10px;margin-right:3px"></i>'+(ev.data||'')+'</span><span class="hpill hp-b"><i class="ti ti-map-pin" style="font-size:10px;margin-right:3px"></i>'+(ev.local||'')+'</span>'+(ev.stand?'<span class="hpill hp-y">'+ev.stand+'</span>':'')+
+'</div></div><div class="stat-grid"><div class="stat"><div class="stat-lbl">Data</div><div class="stat-val" style="font-size:13px">'+(ev.data||'—')+'</div></div><div class="stat"><div class="stat-lbl">Local</div><div class="stat-val" style="font-size:12px">'+(ev.local||'—').split(',')[0]+'</div></div><div class="stat"><div class="stat-lbl">Meta</div><div class="stat-val">'+(ev.meta||'—')+'</div><div class="stat-sub">leads</div></div><div class="stat"><div class="stat-lbl">Equipe</div><div class="stat-val" style="font-size:12px">'+(ev.equipe||'—')+'</div></div></div>'+(ev.orientacoes?'<div class="iblock"><div class="iblock-head"><i class="ti ti-alert-circle"></i> Orientações gerais</div><div class="iblock-body">'+ev.orientacoes+'</div></div>':'');}
+else if(id==='agenda'){var ag=DB.agenda.filter(function(a){return a.evento_id===eid;});if(!ag.length){html='<div class="empty-state"><i class="ti ti-calendar-off"></i><p>Nenhum item de agenda.</p></div>';}else{var bm={Cocktail:'mb-y','Ativação':'mb-p','Stand LAS':'mb-g',Convite:'mb-b'};html='<div class="ag-list">'+ag.map(function(a){var b=a.badge?'<span class="mbadge '+(bm[a.badge]||'mb-b')+'">'+a.badge+'</span>':'';var las=a.destaque==='Sim'?'<span class="mbadge mb-g">LAS</span>':'';return'<div class="ag-item"><span class="ag-day">'+(a.dia||'').replace(' ','<br/>')+'</span><div><div class="ag-title">'+(a.atividade||'')+las+'</div><div class="ag-loc"><i class="ti ti-map-pin"></i>'+(a.local||'')+b+'</div>'+(a.horario?'<div class="ag-loc" style="margin-top:2px"><i class="ti ti-clock"></i>'+a.horario+'</div>':'')+'</div></div>';}).join('')+'</div>';}}
+else if(id==='materiais'){var mt=DB.materiais.filter(function(m){return m.evento_id===eid&&m.ativo!=='Não'&&m.nome;});if(!mt.length){html='<div class="empty-state"><i class="ti ti-file-off"></i><p>Nenhum material.</p></div>';}else{var cs=[];mt.forEach(function(m){if(m.categoria&&cs.indexOf(m.categoria)<0)cs.push(m.categoria);});if(!cs.length)cs=['Geral'];var im={PDF:'fi-pdf',PPT:'fi-ppt',XLS:'fi-xls','Vídeo':'fi-vid',Doc:'fi-doc',ZIP:'fi-zip'};var ic={PDF:'file-type-pdf',PPT:'presentation',XLS:'table','Vídeo':'player-play',Doc:'file',ZIP:'file-zip'};html=cs.map(function(cat){var cm=cat==='Geral'?mt:mt.filter(function(m){return m.categoria===cat;});if(!cm.length)return'';return'<div class="mat-cat">'+cat+'</div><div class="file-list">'+cm.map(function(m){var fc=im[m.tipo]||'fi-doc',fi=ic[m.tipo]||'file';var hf=m.arquivo_base64&&m.arquivo_base64.length>100;var hl=m.link&&m.link!=='';var iv=m.tipo==='Vídeo';var db='<span class="dl-btn dim"><i class="ti ti-clock"></i> Em breve</span>';if(hf){db='<a href="'+m.arquivo_base64+'" download="'+(m.arquivo_nome||m.nome)+'" class="dl-btn"><i class="ti ti-download"></i> Baixar</a>';}else if(hl){db='<a href="'+m.link+'" target="_blank" class="dl-btn"><i class="ti ti-'+(iv?'external-link':'download')+'"></i>'+(iv?'Abrir':'Baixar')+'</a>';}return'<div class="file-row"><div class="ficon '+fc+'"><i class="ti ti-'+fi+'"></i></div><div style="flex:1"><div class="file-name">'+m.nome+'</div><div class="file-meta">'+(m.tipo||'')+(m.data?' · '+m.data:'')+'</div></div>'+db+'</div>';}).join('')+'</div>';}).join('');}}
+else if(id==='equipe'){var mb=DB.equipe.filter(function(p){return p.evento_id===eid&&p.nome;});if(!mb.length){html='<div class="empty-state"><i class="ti ti-users-off"></i><p>Nenhum membro.</p></div>';}else{var ts=[];mb.forEach(function(p){if(p.time&&ts.indexOf(p.time)<0)ts.push(p.time);});if(!ts.length)ts=['Equipe'];html=ts.map(function(t){var gr=t==='Equipe'?mb:mb.filter(function(p){return p.time===t;});if(!gr.length)return'';return'<div class="team-label">'+t+' ('+gr.length+')</div><div class="team-grid">'+gr.map(function(p,i){var ini=p.nome.split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2);return'<div class="contact-card"><div class="av" style="background:'+TC[i%TC.length]+'">'+ini+'</div><div><div class="c-name">'+p.nome+'</div><div class="c-role">'+(p.cargo||'')+'</div>'+(p.telefone?'<div style="font-size:10px;color:#9ca3af;margin-top:3px"><i class="ti ti-phone" style="font-size:11px"></i> '+p.telefone+'</div>':'')+'</div></div>';}).join('')+'</div>';}).join('');}}
+else if(id==='produtos'){var pr=DB.produtos.filter(function(p){return p.evento_id===eid&&p.produto;});if(!pr.length){html='<div class="empty-state"><i class="ti ti-vaccine-bottle"></i><p>Nenhum produto.</p></div>';}else{var il=[];pr.forEach(function(p){if(p.especialidade&&il.indexOf(p.especialidade)<0)il.push(p.especialidade);});html='<div class="island-grid">'+il.map(function(esp){var ip=pr.filter(function(p){return p.especialidade===esp;});var ico=IC[esp]||{bg:'#f9fafb',tc:'#6b7280'};var st=ip[0].estrategia||'';return'<div class="island"><div class="island-head" style="background:'+ico.bg+'"><div class="island-strat" style="color:'+ico.tc+'">'+st+'</div><div class="island-name">'+esp+'</div></div><div class="island-prods">'+ip.map(function(p){return'<div class="prod-row"><div class="prod-dot"'+(p.destaque!=='Sim'?' style="background:#d1d5db"':'')+' ></div>'+p.produto+'</div>';}).join('')+'</div></div>';}).join('')+'</div>';}}
+else if(id==='mkt'){var mr=DB.mkt.find(function(m){return m.evento_id===eid;});if(!mr){html='<div class="empty-state"><i class="ti ti-speakerphone"></i><p>Nenhuma info de MKT.</p></div>';}else{html='<div class="mkt-grid"><div class="mkt-stat"><div class="mkt-lbl">Meta total</div><div class="mkt-val">'+(mr.meta||'—')+'</div><div class="mkt-sub">leads</div></div><div class="mkt-stat"><div class="mkt-lbl">Benchmark</div><div class="mkt-val">6–7</div><div class="mkt-sub">leads/pessoa/dia</div></div></div>'+(mr.dress_code?'<div class="iblock"><div class="iblock-head"><i class="ti ti-shirt"></i> Dress code</div><div class="iblock-body">'+mr.dress_code+'</div></div>':'')+(mr.campanhas?'<div class="iblock"><div class="iblock-head"><i class="ti ti-discount-2"></i> Campanhas</div><div class="iblock-body">'+mr.campanhas+'</div></div>':'')+(mr.acoes?'<div class="iblock"><div class="iblock-head"><i class="ti ti-star"></i> Ações especiais</div><div class="iblock-body">'+mr.acoes+'</div></div>':'')+(mr.mensagens?'<div class="iblock"><div class="iblock-head"><i class="ti ti-message-circle"></i> Mensagens-chave</div><div class="iblock-body">'+mr.mensagens+'</div></div>':'');}}
+else if(id==='leads'){var lpr=DB.leads_lp.find(function(l){return l.evento_id===eid;});var lpl=lpr?lpr.link:'';html='<div class="lp-card"><div class="lp-card-head"><div class="lp-card-title">'+ev.nome+'</div><div class="lp-card-sub">Landing page de captura de leads</div></div><div class="lp-card-body"><div class="lp-link-section"><div class="lp-link-label"><i class="ti ti-link"></i> LP deste evento</div>'+(lpl?'<a href="'+lpl+'" target="_blank" class="lp-open-btn"><i class="ti ti-external-link"></i> Abrir LP de captação</a>':'<div class="lp-no-link">Nenhum link configurado.</div>')+'</div></div></div><div class="speech"><div class="speech-title">Speech no stand</div><div class="speech-body">1. Qual dor? — Identifique o problema do visitante<br/>2. Qual produto encaixa? — Conecte à especialidade correta<br/>3. Qual o próximo passo? — Direcione para a LP ou feche pedido</div></div>';}
+document.getElementById('tabContent').innerHTML='<div class="tab-content active">'+html+'</div>';}
+window.addEventListener('DOMContentLoaded', function(){ renderEv(); });
 </script>
 </body>
 </html>
